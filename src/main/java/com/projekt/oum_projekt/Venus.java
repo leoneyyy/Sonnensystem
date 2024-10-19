@@ -10,12 +10,13 @@ import javafx.stage.Stage;
 
 import java.io.InputStream;
 
-public class Mond extends Planet {
-    public Mond() {
-        super(27, "/images/moon.jpg"); // Die Sonne hat einen Radius von 1000
+public class Venus extends Planet {
+
+    public Venus() {
+        super(95, "/images/venus.jpg"); // Die Sonne hat einen Radius von 1000
     }
 
-    public Node prepareMond() {
+    public Node prepareVenus() {
         return getPlanetSphere(); // Rückgabe der Kugel (Sonne)
     }
 }

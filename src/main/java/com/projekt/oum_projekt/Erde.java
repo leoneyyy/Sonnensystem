@@ -10,29 +10,13 @@ import javafx.stage.Stage;
 
 import java.io.InputStream;
 
-public class Erde extends Application {
-    public   final Sphere erde = new Sphere(500);
-    @Override
-    public void start(Stage primaryStage) {
-    }
-    public Node prepareEarth(){
-        PhongMaterial material = new PhongMaterial();
-
-        InputStream imageStream = getClass().getResourceAsStream("/images/earth.jpg");
-        if (imageStream == null) {
-            System.out.println("Bild nicht gefunden!");
-            return null; // oder eine Ausnahme werfen
-        }
-
-        material.setDiffuseMap(new Image(imageStream));
-        erde.setRotationAxis(Rotate.Y_AXIS);
-        erde.setMaterial(material);
-
-        return erde;
+public class Erde extends Planet {
+    public Erde() {
+        super(100, "/images/earth.jpg"); // Die Sonne hat einen Radius von 1000
     }
 
-    public Sphere getErde() {
-        return erde;
+    public Node prepareErde() {
+        return getPlanetSphere(); // Rückgabe der Kugel (Sonne)
     }
 
 
