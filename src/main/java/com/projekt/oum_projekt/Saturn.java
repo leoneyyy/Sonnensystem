@@ -13,7 +13,7 @@ public class Saturn extends Planet {
     private final Cylinder ringe;
 
     public Saturn() {
-        super(900, "/images/saturn.jpg"); // Saturn hat einen Radius von 400
+        super(900, "/images/saturn.jpg");
         ringe = new Cylinder(700, 10);    // Ringe um Saturn
         PhongMaterial ringMaterial = new PhongMaterial();
         InputStream ringImageStream = getClass().getResourceAsStream("/images/saturn_rings.png");

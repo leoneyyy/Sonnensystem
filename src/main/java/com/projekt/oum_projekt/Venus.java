@@ -1,22 +1,16 @@
 package com.projekt.oum_projekt;
 
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Sphere;
-import javafx.scene.transform.Rotate;
-import javafx.stage.Stage;
 
-import java.io.InputStream;
+import javafx.scene.Node;
+
 
 public class Venus extends Planet {
 
     public Venus() {
-        super(95, "/images/venus.jpg"); // Die Sonne hat einen Radius von 1000
+        super(95, "/images/venus.jpg");
     }
 
     public Node prepareVenus() {
-        return getPlanetSphere(); // Rückgabe der Kugel (Sonne)
+        return getPlanetSphere();
     }
 }
