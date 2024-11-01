@@ -7,7 +7,7 @@ import javafx.scene.Node;
 public class Venus extends Planet {
 
     public Venus() {
-        super(95, "/images/venus.jpg");
+        super(135, "/images/venus.jpg");
     }
 
     public Node prepareVenus() {

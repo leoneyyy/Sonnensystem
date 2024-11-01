@@ -7,7 +7,7 @@ import javafx.scene.Node;
 public class Sonne extends Planet {
 
     public Sonne() {
-        super(1000, "/images/sun.jpg"); // Die Sonne hat einen Radius von 1000
+        super(16350, "/images/sun.jpg"); // Die Sonne hat einen Radius von 1000
     }
 
     public Node prepareSonne() {

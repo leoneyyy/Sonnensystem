@@ -6,7 +6,7 @@ import javafx.scene.Node;
 
 public class Erde extends Planet {
     public Erde() {
-        super(100, "/images/earth.jpg");
+        super(150, "/images/earth.jpg");
     }
 
     public Node prepareErde() {

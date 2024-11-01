@@ -7,7 +7,7 @@ import javafx.scene.Node;
 public class Mars extends Planet {
 
     public Mars() {
-        super(53, "/images/mars.jpg");
+        super(80, "/images/mars.jpg");
     }
 
     public Node prepareMars() {
