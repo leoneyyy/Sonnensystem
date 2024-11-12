@@ -23,6 +23,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
@@ -34,8 +36,8 @@ import javafx.util.Duration;
 import java.io.IOException;
 
 public class SonnenSystem extends Application {
-    public static final int width = 1400;
-    public static final int height = 800;
+    public static final int width = 1920;
+    public static final int height = 1080;
 
     private double anchorX, anchorY;
     private double anchorAngleX = 0;
@@ -55,15 +57,7 @@ public class SonnenSystem extends Application {
 
 
     public PerspectiveCamera camera;
-    public PerspectiveCamera earthCamera;
-    public PerspectiveCamera moonCamera;
-    public PerspectiveCamera mercuryCamera;
-    public PerspectiveCamera venusCamera;
-    public PerspectiveCamera neptuneCamera;
-    public PerspectiveCamera saturnCamera;
-    public PerspectiveCamera uranusCamera;
-    public PerspectiveCamera jupiterCamera;
-    public PerspectiveCamera marsCamera;
+    public PerspectiveCamera secondCamera;
 
     double saturnX;
     double saturnZ;
@@ -95,55 +89,9 @@ public class SonnenSystem extends Application {
         camera.setFieldOfView(60);
 
         //ErdKamera
-        earthCamera = new PerspectiveCamera(true);
-        earthCamera.setNearClip(1);
-        earthCamera.setFarClip(200000);
-
-        //MondKamera
-        moonCamera = new PerspectiveCamera(true);
-        moonCamera.setNearClip(1);
-        moonCamera.setFarClip(200000);
-
-        //MerkurKamera
-        mercuryCamera = new PerspectiveCamera(true);
-        mercuryCamera.setNearClip(1);
-        mercuryCamera.setFarClip(200000);
-
-        //VenusKamera
-        venusCamera = new PerspectiveCamera(true);
-        venusCamera.setNearClip(1);
-        venusCamera.setFarClip(200000);
-
-        //NeptunKamera
-        neptuneCamera = new PerspectiveCamera(true);
-        neptuneCamera.setNearClip(1);
-        neptuneCamera.setFarClip(200000);
-
-        //SaturnKamera
-        saturnCamera = new PerspectiveCamera(true);
-        saturnCamera.setNearClip(1);
-        saturnCamera.setFarClip(200000);
-
-
-        //UranusKamera
-        uranusCamera = new PerspectiveCamera(true);
-        uranusCamera.setNearClip(1);
-        uranusCamera.setFarClip(200000);
-
-
-        //JupiterKamera
-        jupiterCamera = new PerspectiveCamera(true);
-        jupiterCamera.setNearClip(1);
-        jupiterCamera.setFarClip(200000);
-
-
-        //MarsKamera
-        marsCamera = new PerspectiveCamera(true);
-        marsCamera.setNearClip(1);
-        marsCamera.setFarClip(200000);
-
-
-
+        secondCamera = new PerspectiveCamera(true);
+        secondCamera.setNearClip(1);
+        secondCamera.setFarClip(200000);
 
 
         //Sonne
@@ -221,6 +169,24 @@ public class SonnenSystem extends Application {
 
 
 
+        Text text = new Text("Interaktive Darstellung des Sonnensystems");
+        //text.setScaleX(55); // Beispielwert, anpassen nach Bedarf
+        //text.setScaleY(55);
+        text.setX(-3000);
+        text.setY(-4280);
+        text.setTranslateZ(-30000*3);
+        text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,250));
+        text.setFill(Color.WHITE);
+
+        Text beschreibung = new Text("Tasten um auf Planeten zu zoomen: \nErde: Taste E\nMond: Taste M\nMars: Taste A\nMerkur: Taste Y\nUranus: Taste U\nVenus: Taste V\nSaturn: Taste S\nJupiter: Taste J\nNeptun: Taste N");
+        beschreibung.setX(-8000);
+        beschreibung.setY(2000);
+        beschreibung.setTranslateZ(-30000*3);
+        beschreibung.setFont(Font.font("verdana",FontWeight.NORMAL, FontPosture.REGULAR , 130));
+        beschreibung.setFill(Color.WHITE);
+        sonnenGruppe.getChildren().addAll(text, beschreibung);
+
+
 
         erdGruppe.getChildren().add(mondGruppe);
         sonnenGruppe.getChildren().add(erdGruppe);
@@ -241,7 +207,7 @@ public class SonnenSystem extends Application {
 
         scene.setOnKeyPressed(event -> handleKeyPress(event));
 
-        if (isAllCameraActive) {
+        if (!isAllCameraActive) {
             initMouseControl(sonnenGruppe, scene, stage);
         }
 
@@ -286,15 +252,25 @@ public class SonnenSystem extends Application {
                 // Erde bewegt sich in einer Umlaufbahn um die Sonne
                 earthAngle += 0.005;  // Winkel für die Umlaufbahn der Erde
                 double earthX = earthOrbitRadius * Math.cos(earthAngle) ;  // X-Koordinate der Erde
-                double earthZ = earthOrbitRadius * Math.sin(earthAngle);  // Z-Koordinate der Erde
+                double earthZ = earthOrbitRadius * Math.sin(earthAngle);// Z-Koordinate der Erde
                 erde.setTranslateX(earthX);
                 erde.setTranslateZ(earthZ);
+                //System.out.println(earthX);
 
                 if (isEarthCameraActive) {
-                    earthCamera.setTranslateX(earthX);
-                    earthCamera.setTranslateY(0);
-                    earthCamera.setTranslateZ(earthZ - 650);
-                    scene.setCamera(earthCamera);
+                    secondCamera.setTranslateX(earthX);
+                    secondCamera.setTranslateY(0);
+                    secondCamera.setTranslateZ(earthZ - 850);
+                    scene.setCamera(secondCamera);
+
+                    erdGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    Text erdText = new Text("Die Erde");
+                    erdText.setX(earthX-40);
+                    erdText.setY(-175);
+                    erdText.setTranslateZ(earthZ);
+                    erdText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+                    erdText.setFill(Color.WHITE);
+                    erdGruppe.getChildren().add(erdText);
                 }
 
                 mond.rotateProperty().set(mond.getRotate() + 0.2);
@@ -308,9 +284,9 @@ public class SonnenSystem extends Application {
 
                 if (isMoonCameraActive) {
                     // Setze die Kamera direkt vor den Mond
-                    moonCamera.setTranslateX(earthX+moonX);
-                    moonCamera.setTranslateY(0); // Leicht über dem Mond
-                    moonCamera.setTranslateZ(earthZ+moonZ - 350); // Positioniere die Kamera weiter entfernt
+                    secondCamera.setTranslateX(earthX+moonX);
+                    secondCamera.setTranslateY(0); // Leicht über dem Mond
+                    secondCamera.setTranslateZ(earthZ+moonZ - 350); // Positioniere die Kamera weiter entfernt
                 }
 
                     // Merkur bewegt sich in einer schnelleren Umlaufbahn um die Sonne
@@ -321,9 +297,9 @@ public class SonnenSystem extends Application {
                 merkur.setTranslateZ(mercuryZ);
 
                 if (isMercuryCameraActive) {
-                    mercuryCamera.setTranslateX(mercuryX);
-                    mercuryCamera.setTranslateY(0);
-                    mercuryCamera.setTranslateZ(mercuryZ - 350);
+                    secondCamera.setTranslateX(mercuryX);
+                    secondCamera.setTranslateY(0);
+                    secondCamera.setTranslateZ(mercuryZ - 350);
                 }
 
                 // Venus bewegt sich um die Sonne
@@ -333,9 +309,9 @@ public class SonnenSystem extends Application {
                 venus.setTranslateX(venusX);
                 venus.setTranslateZ(venusZ);
                 if (isVenusCameraActive) {
-                    venusCamera.setTranslateX(venusX);
-                    venusCamera.setTranslateY(0);
-                    venusCamera.setTranslateZ(venusZ - 2050);
+                    secondCamera.setTranslateX(venusX);
+                    secondCamera.setTranslateY(0);
+                    secondCamera.setTranslateZ(venusZ - 2050);
                 }
 
                 // Mars bewegt sich um die Sonne
@@ -345,9 +321,9 @@ public class SonnenSystem extends Application {
                 mars.setTranslateX(marsX);
                 mars.setTranslateZ(marsZ);
                 if (isMarsCameraActive) {
-                    marsCamera.setTranslateX(marsX);
-                    marsCamera.setTranslateY(0);
-                    marsCamera.setTranslateZ(marsZ - 1050);
+                    secondCamera.setTranslateX(marsX);
+                    secondCamera.setTranslateY(0);
+                    secondCamera.setTranslateZ(marsZ - 1050);
                 }
 
                 // Jupiter bewegt sich um die Sonne
@@ -358,9 +334,9 @@ public class SonnenSystem extends Application {
                 jupiter.setTranslateZ(jupiterZ);
 
                 if (isJupiterCameraActive) {
-                    jupiterCamera.setTranslateX(jupiterX);
-                    jupiterCamera.setTranslateY(0);
-                    jupiterCamera.setTranslateZ(jupiterZ - 8900);
+                    secondCamera.setTranslateX(jupiterX);
+                    secondCamera.setTranslateY(0);
+                    secondCamera.setTranslateZ(jupiterZ - 8900);
                 }
 
                 // Saturn bewegt sich um die Sonne
@@ -374,9 +350,9 @@ public class SonnenSystem extends Application {
                 ring.setTranslateZ(saturnZ);
                 ring.setTranslateY(-100);
                 if (isSaturnCameraActive) {
-                    saturnCamera.setTranslateX(saturnX);
-                    saturnCamera.setTranslateY(0);
-                    saturnCamera.setTranslateZ(saturnZ - 8050);
+                    secondCamera.setTranslateX(saturnX);
+                    secondCamera.setTranslateY(0);
+                    secondCamera.setTranslateZ(saturnZ - 8050);
                 }
 
                 // Uranus bewegt sich um die Sonne
@@ -386,9 +362,9 @@ public class SonnenSystem extends Application {
                 uranus.setTranslateX(uranusX);
                 uranus.setTranslateZ(uranusZ);
                 if (isUranusCameraActive) {
-                    uranusCamera.setTranslateX(uranusX);
-                    uranusCamera.setTranslateY(0);
-                    uranusCamera.setTranslateZ(uranusZ - 8050);
+                    secondCamera.setTranslateX(uranusX);
+                    secondCamera.setTranslateY(0);
+                    secondCamera.setTranslateZ(uranusZ - 8050);
                 }
 
 
@@ -398,10 +374,11 @@ public class SonnenSystem extends Application {
                 double neptuneZ = neptuneOrbitRadius * Math.sin(neptuneAngle);
                 neptune.setTranslateX(neptuneX);
                 neptune.setTranslateZ(neptuneZ);
+                neptune.rotateProperty().set(neptune.getRotate() - 0.2);
                 if (isNeptuneCameraActive) {
-                    neptuneCamera.setTranslateX(neptuneX);
-                    neptuneCamera.setTranslateY(0);
-                    neptuneCamera.setTranslateZ(neptuneZ - 8050);
+                    secondCamera.setTranslateX(neptuneX);
+                    secondCamera.setTranslateY(0);
+                    secondCamera.setTranslateZ(neptuneZ - 8050);
                 }
 
                 // Sonne dreht sich um sich selbst
@@ -472,39 +449,39 @@ public class SonnenSystem extends Application {
         switch (event.getCode()) {
             case E:
                 isEarthCameraActive = !isEarthCameraActive;
-                switchCamera(earthCamera, isEarthCameraActive);
+                switchCamera(secondCamera, isEarthCameraActive);
                 break;
             case Y:
                 isMercuryCameraActive = !isMercuryCameraActive;
-                switchCamera(mercuryCamera, isMercuryCameraActive);
+                switchCamera(secondCamera, isMercuryCameraActive);
                 break;
             case M:
                 isMoonCameraActive = !isMoonCameraActive;
-                switchCamera(moonCamera, isMoonCameraActive);
+                switchCamera(secondCamera, isMoonCameraActive);
                 break;
             case J:
                 isJupiterCameraActive = !isJupiterCameraActive;
-                switchCamera(jupiterCamera, isJupiterCameraActive);
+                switchCamera(secondCamera, isJupiterCameraActive);
                 break;
             case S:
                 isSaturnCameraActive = !isSaturnCameraActive;
-                switchCamera(saturnCamera, isSaturnCameraActive);
+                switchCamera(secondCamera, isSaturnCameraActive);
                 break;
             case A:
                 isMarsCameraActive = !isMarsCameraActive;
-                switchCamera(marsCamera, isMarsCameraActive);
+                switchCamera(secondCamera, isMarsCameraActive);
                 break;
             case U:
                 isUranusCameraActive = !isUranusCameraActive;
-                switchCamera(uranusCamera, isUranusCameraActive);
+                switchCamera(secondCamera, isUranusCameraActive);
                 break;
             case N:
                 isNeptuneCameraActive = !isNeptuneCameraActive;
-                switchCamera(neptuneCamera, isNeptuneCameraActive);
+                switchCamera(secondCamera, isNeptuneCameraActive);
                 break;
             case V:
                 isVenusCameraActive = !isVenusCameraActive;
-                switchCamera(venusCamera, isVenusCameraActive);
+                switchCamera(secondCamera, isVenusCameraActive);
                 break;
             default:
                 break;
@@ -520,9 +497,7 @@ public class SonnenSystem extends Application {
         }
     }
 
-
-
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         launch();
     }
 }
