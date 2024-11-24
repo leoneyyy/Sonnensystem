@@ -273,7 +273,7 @@ public class SonnenSystem extends Application {
                     erdGruppe.getChildren().add(erdText);
                 }
 
-                mond.rotateProperty().set(mond.getRotate() + 0.2);
+                mond.rotateProperty().set(mond.getRotate() - 0.2);
 
                 // Mond bewegt sich in einer Umlaufbahn um die Erde
                 moonAngle += 0.02;  // Schnellerer Winkel für die Umlaufbahn des Mondes
@@ -286,7 +286,15 @@ public class SonnenSystem extends Application {
                     // Setze die Kamera direkt vor den Mond
                     secondCamera.setTranslateX(earthX+moonX);
                     secondCamera.setTranslateY(0); // Leicht über dem Mond
-                    secondCamera.setTranslateZ(earthZ+moonZ - 350); // Positioniere die Kamera weiter entfernt
+                    secondCamera.setTranslateZ(earthZ+moonZ - 350);
+                    mondGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    Text mondText = new Text("Der Mond");
+                    mondText.setX(earthX+moonX-70);
+                    mondText.setY(-180);
+                    mondText.setTranslateZ(earthZ+moonZ+600);
+                    mondText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 30));
+                    mondText.setFill(Color.WHITE);
+                    mondGruppe.getChildren().add(mondText);
                 }
 
                     // Merkur bewegt sich in einer schnelleren Umlaufbahn um die Sonne
@@ -300,6 +308,14 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(mercuryX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(mercuryZ - 350);
+                    merkurGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    Text merkurText = new Text("Der Merkur");
+                    merkurText.setX(mercuryX-30);
+                    merkurText.setY(-60);
+                    merkurText.setTranslateZ(mercuryZ-30);
+                    merkurText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 10));
+                    merkurText.setFill(Color.WHITE);
+                    merkurGruppe.getChildren().add(merkurText);
                 }
 
                 // Venus bewegt sich um die Sonne
@@ -312,6 +328,15 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(venusX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(venusZ - 2050);
+                    venusGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    Text venusText = new Text("Die Venus");
+                    venusText.setX(venusX-80);
+                    venusText.setY(-400);
+                    venusText.setTranslateZ(venusZ-30);
+                    venusText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 40));
+                    venusText.setFill(Color.WHITE);
+                    venusGruppe.getChildren().add(venusText);
+                    
                 }
 
                 // Mars bewegt sich um die Sonne
@@ -320,10 +345,19 @@ public class SonnenSystem extends Application {
                 double marsZ = marsOrbitRadius * Math.sin(marsAngle);
                 mars.setTranslateX(marsX);
                 mars.setTranslateZ(marsZ);
+                mars.rotateProperty().set(mars.getRotate() - 0.05);
                 if (isMarsCameraActive) {
                     secondCamera.setTranslateX(marsX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(marsZ - 1050);
+                    marsGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    Text marsText = new Text("Der Mars");
+                    marsText.setX(marsX-70);
+                    marsText.setY(-300);
+                    marsText.setTranslateZ(marsZ+400);
+                    marsText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 30));
+                    marsText.setFill(Color.WHITE);
+                    marsGruppe.getChildren().add(marsText);
                 }
 
                 // Jupiter bewegt sich um die Sonne
@@ -332,11 +366,20 @@ public class SonnenSystem extends Application {
                 double jupiterZ = jupiterOrbitRadius * Math.sin(jupiterAngle);
                 jupiter.setTranslateX(jupiterX);
                 jupiter.setTranslateZ(jupiterZ);
+                jupiter.rotateProperty().set(jupiter.getRotate() - 0.05);
 
                 if (isJupiterCameraActive) {
                     secondCamera.setTranslateX(jupiterX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(jupiterZ - 8900);
+                    jupiterGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    Text jupiterText = new Text("Der Jupiter");
+                    jupiterText.setX(jupiterX-400);
+                    jupiterText.setY(-1770);
+                    jupiterText.setTranslateZ(jupiterZ-30);
+                    jupiterText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
+                    jupiterText.setFill(Color.WHITE);
+                    jupiterGruppe.getChildren().add(jupiterText);
                 }
 
                 // Saturn bewegt sich um die Sonne
@@ -353,6 +396,14 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(saturnX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(saturnZ - 8050);
+                    saturnGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    Text saturnText = new Text("Der Saturn");
+                    saturnText.setX(saturnX-400);
+                    saturnText.setY(-1770);
+                    saturnText.setTranslateZ(saturnZ-30);
+                    saturnText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
+                    saturnText.setFill(Color.WHITE);
+                    saturnGruppe.getChildren().add(saturnText);
                 }
 
                 // Uranus bewegt sich um die Sonne
@@ -361,10 +412,20 @@ public class SonnenSystem extends Application {
                 double uranusZ = uranusOrbitRadius * Math.sin(uranusAngle);
                 uranus.setTranslateX(uranusX);
                 uranus.setTranslateZ(uranusZ);
+                uranus.rotateProperty().set(uranus.getRotate() - 0.05);
                 if (isUranusCameraActive) {
                     secondCamera.setTranslateX(uranusX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(uranusZ - 8050);
+                    uranusGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    Text uranusText = new Text("Der Uranus");
+                    uranusText.setX(uranusX-400);
+                    uranusText.setY(-1700);
+                    uranusText.setTranslateZ(uranusZ-30);
+                    uranusText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
+                    uranusText.setFill(Color.WHITE);
+                    uranusGruppe.getChildren().add(uranusText);
+
                 }
 
 
@@ -379,6 +440,14 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(neptuneX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(neptuneZ - 8050);
+                    neptuneGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    Text neptuneText = new Text("Der Saturn");
+                    neptuneText.setX(saturnX-400);
+                    neptuneText.setY(-1770);
+                    neptuneText.setTranslateZ(saturnZ-30);
+                    neptuneText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
+                    neptuneText.setFill(Color.WHITE);
+                    neptuneGruppe.getChildren().add(neptuneText);
                 }
 
                 // Sonne dreht sich um sich selbst
@@ -449,51 +518,52 @@ public class SonnenSystem extends Application {
         switch (event.getCode()) {
             case E:
                 isEarthCameraActive = !isEarthCameraActive;
-                switchCamera(secondCamera, isEarthCameraActive);
+                switchCamera(secondCamera, isEarthCameraActive,erdGruppe);
                 break;
             case Y:
                 isMercuryCameraActive = !isMercuryCameraActive;
-                switchCamera(secondCamera, isMercuryCameraActive);
+                switchCamera(secondCamera, isMercuryCameraActive,merkurGruppe);
                 break;
             case M:
                 isMoonCameraActive = !isMoonCameraActive;
-                switchCamera(secondCamera, isMoonCameraActive);
+                switchCamera(secondCamera, isMoonCameraActive,mondGruppe);
                 break;
             case J:
                 isJupiterCameraActive = !isJupiterCameraActive;
-                switchCamera(secondCamera, isJupiterCameraActive);
+                switchCamera(secondCamera, isJupiterCameraActive,jupiterGruppe);
                 break;
             case S:
                 isSaturnCameraActive = !isSaturnCameraActive;
-                switchCamera(secondCamera, isSaturnCameraActive);
+                switchCamera(secondCamera, isSaturnCameraActive,saturnGruppe);
                 break;
             case A:
                 isMarsCameraActive = !isMarsCameraActive;
-                switchCamera(secondCamera, isMarsCameraActive);
+                switchCamera(secondCamera, isMarsCameraActive,marsGruppe);
                 break;
             case U:
                 isUranusCameraActive = !isUranusCameraActive;
-                switchCamera(secondCamera, isUranusCameraActive);
+                switchCamera(secondCamera, isUranusCameraActive,uranusGruppe);
                 break;
             case N:
                 isNeptuneCameraActive = !isNeptuneCameraActive;
-                switchCamera(secondCamera, isNeptuneCameraActive);
+                switchCamera(secondCamera, isNeptuneCameraActive,neptuneGruppe);
                 break;
             case V:
                 isVenusCameraActive = !isVenusCameraActive;
-                switchCamera(secondCamera, isVenusCameraActive);
+                switchCamera(secondCamera, isVenusCameraActive, venusGruppe);
                 break;
             default:
                 break;
         }
     }
 
-    private void switchCamera(Camera targetCamera, boolean isActive) {
+    private void switchCamera(Camera targetCamera, boolean isActive, Group group) {
         if (isActive) {
             scene.setCamera(targetCamera);
             isAllCameraActive = false;
         } else {
-            scene.setCamera(camera); // Zurück zur Hauptkamera
+            scene.setCamera(camera);
+            group.getChildren().removeIf(node -> node instanceof Text);// Zurück zur Hauptkamera
         }
     }
 
