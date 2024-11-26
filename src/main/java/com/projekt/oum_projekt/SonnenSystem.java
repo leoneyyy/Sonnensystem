@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -28,6 +29,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.SubScene;
 import javafx.util.Duration;
@@ -36,8 +38,8 @@ import javafx.util.Duration;
 import java.io.IOException;
 
 public class SonnenSystem extends Application {
-    public static final int width = 1920;
-    public static final int height = 1080;
+    public static double width = 0;
+    public static double height = 0;
 
     private double anchorX, anchorY;
     private double anchorAngleX = 0;
@@ -54,10 +56,12 @@ public class SonnenSystem extends Application {
     private boolean isNeptuneCameraActive = false;
     private boolean isMarsCameraActive = false;
     private boolean isAllCameraActive = true;
+    private boolean isTopDownCameraActive = false;
 
 
     public PerspectiveCamera camera;
     public PerspectiveCamera secondCamera;
+    public PerspectiveCamera topDownCamera;
 
     double saturnX;
     double saturnZ;
@@ -80,6 +84,8 @@ public class SonnenSystem extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
+        width =  Screen.getPrimary().getBounds().getWidth();
+        height = Screen.getPrimary().getBounds().getHeight();
 
         //Kamera
         camera = new PerspectiveCamera(true);
@@ -92,6 +98,13 @@ public class SonnenSystem extends Application {
         secondCamera = new PerspectiveCamera(true);
         secondCamera.setNearClip(1);
         secondCamera.setFarClip(200000);
+
+        topDownCamera = new PerspectiveCamera(true);
+        topDownCamera.setTranslateX(0);
+        topDownCamera.setTranslateY(width/2);
+        topDownCamera.setTranslateZ(0);
+        topDownCamera.setRotate(90);
+        topDownCamera.setRotationAxis(Rotate.X_AXIS);
 
 
         //Sonne
@@ -265,12 +278,24 @@ public class SonnenSystem extends Application {
 
                     erdGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text erdText = new Text("Die Erde");
+                    Text erdInfo = new Text("Erde\n" +
+                            "Mittlerer Radius: 6371km\n" +
+                            "Masse: 1 Me\n" +
+                            "Orbitalperiode: 365,24\n" +
+                            "Tage Rotationsperiode: 23,93h\n" +
+                            "Anzahl der Monde: einen\n" +
+                            "Orbitaldistanz zur Sonne: 1,0 AE");
+                    erdInfo.setX(earthX-400);
+                    erdInfo.setY(50);
+                    erdInfo.setTranslateZ(earthZ);
+                    erdInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+                    erdInfo.setFill(Color.WHITE);
                     erdText.setX(earthX-40);
                     erdText.setY(-175);
                     erdText.setTranslateZ(earthZ);
                     erdText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
                     erdText.setFill(Color.WHITE);
-                    erdGruppe.getChildren().add(erdText);
+                    erdGruppe.getChildren().addAll(erdText,erdInfo);
                 }
 
                 mond.rotateProperty().set(mond.getRotate() - 0.2);
@@ -289,15 +314,24 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(earthZ+moonZ - 350);
                     mondGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text mondText = new Text("Der Mond");
+                    Text mondInfo = new Text("Mittlerer Radius: 1737,5km \n" +
+                            "Rotationsperiode: 27,32 Tage \n" +
+                            "Orbitalperiode: 27,32 Tage \n" +
+                            "Entfernung zur Erde: 384,400km");
+                    mondInfo.setX(earthX+moonX-450);
+                    mondInfo.setY(140);
+                    mondInfo.setTranslateZ(earthZ+moonZ+600);
+                    mondInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+                    mondInfo.setFill(Color.WHITE);
                     mondText.setX(earthX+moonX-70);
                     mondText.setY(-180);
                     mondText.setTranslateZ(earthZ+moonZ+600);
                     mondText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 30));
                     mondText.setFill(Color.WHITE);
-                    mondGruppe.getChildren().add(mondText);
+                    mondGruppe.getChildren().addAll(mondText,mondInfo);
                 }
 
-                    // Merkur bewegt sich in einer schnelleren Umlaufbahn um die Sonne
+                // Merkur bewegt sich in einer schnelleren Umlaufbahn um die Sonne
                 mercuryAngle += 0.01;  // Schnellerer Winkel für die Umlaufbahn des Merkurs
                 double mercuryX = mercuryOrbitRadiusX * Math.cos(mercuryAngle);  // X-Koordinate des Merkurs
                 double mercuryZ = mercuryOrbitRadiusZ * Math.sin(mercuryAngle);  // Z-Koordinate des Merkurs
@@ -310,12 +344,30 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(mercuryZ - 350);
                     merkurGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text merkurText = new Text("Der Merkur");
+                    Text mekurInfo = new Text("Durchmesser: 4.878 km\n" +
+                            "Mittlerer Radius: 2439,7km\n" +
+                            "Masse: 0,055 Me\n" +
+                            "Oberflächentemperatur: schwankt zwischen \n -173C auf Nachtseite und +427 C auf Tagseite\n" +
+                            "Orbitalperiode: 87,97 Tage\n" +
+                            "Rotationsperiode: 58,67 Tage\n" +
+                            "Atmosphäre: keine Atmosphäre im „herkömmlichen Sinne“\n" +
+                            "Anzahl der Monde: keine\n" +
+                            "Orbitaldistanz zur Sonne: mittleren Abstand von 0,4 AE\n" +
+                            "Besondere Merkmale: durch fehlen einer ausgeprägten, schützenden Atmosphäre ist er ein\n" +
+                            "Planet der Extreme, Kern im Verhältnis zu Gesamtdurchmesser weit größer als bei anderen\n" +
+                            "Planeten\n");
+                    mekurInfo.setX(mercuryX-400);
+                    mekurInfo.setY(30);
+                    mekurInfo.setTranslateZ(mercuryZ+500);
+                    mekurInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 12));
+                    mekurInfo.setFill(Color.WHITE);
                     merkurText.setX(mercuryX-30);
                     merkurText.setY(-60);
-                    merkurText.setTranslateZ(mercuryZ-30);
-                    merkurText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 10));
+                    merkurText.setTranslateZ(mercuryZ);
+                    merkurText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 15));
                     merkurText.setFill(Color.WHITE);
-                    merkurGruppe.getChildren().add(merkurText);
+                    merkurGruppe.getChildren().addAll(merkurText,mekurInfo);
+
                 }
 
                 // Venus bewegt sich um die Sonne
@@ -330,12 +382,26 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(venusZ - 2050);
                     venusGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text venusText = new Text("Die Venus");
+                    Text venusInfo = new Text("Venus – „Zwilling der Erde“ \n" +
+                            "Mittlerer Radius: 6051,8km \n" +
+                            "Masse: 0,815 Me \n" +
+                            "Orbitalperiode: 224,70 Tage \n" +
+                            "Rotationsperiode: 243,02 Tage \n" +
+                            "Atmosphäre: etwa 90mal dichter als die der Erde, Wolkenhülle verdeckt dauerhaft Sicht auf Oberfläche \n" +
+                            "Anzahl der Monde: keinen \n" +
+                            "Orbitaldistanz zur Sonne: 0,723 AE \n" +
+                            "Besondere Merkmale: schwaches Magnetfeld ");
+                    venusInfo.setX(venusX-950);
+                    venusInfo.setY(250);
+                    venusInfo.setTranslateZ(venusZ);
+                    venusInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+                    venusInfo.setFill(Color.WHITE);
                     venusText.setX(venusX-80);
                     venusText.setY(-400);
                     venusText.setTranslateZ(venusZ-30);
                     venusText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 40));
                     venusText.setFill(Color.WHITE);
-                    venusGruppe.getChildren().add(venusText);
+                    venusGruppe.getChildren().addAll(venusText,venusInfo);
                     
                 }
 
@@ -352,12 +418,27 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(marsZ - 1050);
                     marsGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text marsText = new Text("Der Mars");
+                    Text marsInfo = new Text("Mars -  „der rote Planet“ \n" +
+                            "Masse: 0,107 Erdmasse – erheblich kleiner als Erde / 0,151 Me \n" +
+                            "Mittlerer Radius: 3386,2km \n" +
+                            "Orbitalperiode: 687 Tage \n" +
+                            "Rotationsperiode: 24h 37min \n" +
+                            "Atmosphäre:dünn. Besteht hauptsächlich aus Kohlenstoffdioxid, Oberfläche geprägt durch \n" +
+                            "riesige  Vulkane (z.B. 27km hoher Olympus Mons) und tiefe Täler und Canyons \n" +
+                            "Anzahl der Monde: zwei kleine ( Phobos + Deimos) \n" +
+                            "Orbitaldistanz zur Sonne: 1,5 AE \n" +
+                            "Besondere Merkmale: Marsbeben deuten darauf hin, dass der Planet sachrumpft ");
+                    marsInfo.setX(marsX-500);
+                    marsInfo.setY(80);
+                    marsInfo.setTranslateZ(marsZ);
+                    marsInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 15));
+                    marsInfo.setFill(Color.WHITE);
                     marsText.setX(marsX-70);
                     marsText.setY(-300);
                     marsText.setTranslateZ(marsZ+400);
                     marsText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 30));
                     marsText.setFill(Color.WHITE);
-                    marsGruppe.getChildren().add(marsText);
+                    marsGruppe.getChildren().addAll(marsInfo,marsText);
                 }
 
                 // Jupiter bewegt sich um die Sonne
@@ -374,18 +455,37 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(jupiterZ - 8900);
                     jupiterGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text jupiterText = new Text("Der Jupiter");
+                    Text jupiterInfo = new Text("Jupiter \n" +
+                            "Durchmesser: knapp 142.000 km  (Erde würde 11 mal reinpassen) \n" +
+                            "Mittlerer Radius: : [äquatorial]: 71,492km  [polar]: 66,854km \n" +
+                            "Masse: 2,5 mal die Masse aller Planeten zusammengenommen (entspricht ca. 318 \n" +
+                            "Erdmassen) 317,8 Me \n" +
+                            "Orbitalperiode: 11,86 Jahre \n" +
+                            "Rotationsperiode: 9,925h \n" +
+                            "Atmosphäre: hat keine feste Oberfläche, Druck 10 bar als unteres Ende der Troposphäre  \n" +
+                            "Anzahl der Monde: aktuell 79, viele weniger als 10km Durchmesser; vier Galilei’schen \n" +
+                            "Monde: Io, Europa, Ganymed, Kallisto \n" +
+                            "Ganymed größter Mond des Sonnensystems mit Durchmesser über 5200km (etwa 1,5fache \n" +
+                            "vom Erdmond) \n" +
+                            "Orbitaldistanz zur Sonne: 5,203 AE \n" +
+                            "Besondere Merkmale: gewaltige Anziehungskraft ");
+                    jupiterInfo.setX(jupiterX-4200);
+                    jupiterInfo.setY(970);
+                    jupiterInfo.setTranslateZ(jupiterZ-30);
+                    jupiterInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 70));
+                    jupiterInfo.setFill(Color.WHITE);
                     jupiterText.setX(jupiterX-400);
                     jupiterText.setY(-1770);
                     jupiterText.setTranslateZ(jupiterZ-30);
                     jupiterText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
                     jupiterText.setFill(Color.WHITE);
-                    jupiterGruppe.getChildren().add(jupiterText);
+                    jupiterGruppe.getChildren().addAll(jupiterText,jupiterInfo);
                 }
 
                 // Saturn bewegt sich um die Sonne
                 saturnAngle += 0.0015;  // Winkel für die Umlaufbahn des Saturns
-                 saturnX = saturnOrbitRadius * Math.cos(saturnAngle);
-                 saturnZ = saturnOrbitRadius * Math.sin(saturnAngle);
+                saturnX = saturnOrbitRadius * Math.cos(saturnAngle);
+                saturnZ = saturnOrbitRadius * Math.sin(saturnAngle);
                 saturn.setTranslateX(saturnX);
                 saturn.setTranslateZ(saturnZ);
 
@@ -398,6 +498,18 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(saturnZ - 8050);
                     saturnGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text saturnText = new Text("Der Saturn");
+                    Text erdInfo = new Text("Erde\n" +
+                            "Mittlerer Radius: 6371km\n" +
+                            "Masse: 1 Me\n" +
+                            "Orbitalperiode: 365,24\n" +
+                            "Tage Rotationsperiode: 23,93h\n" +
+                            "Anzahl der Monde: einen\n" +
+                            "Orbitaldistanz zur Sonne: 1,0 AE");
+                    erdInfo.setX(earthX-400);
+                    erdInfo.setY(50);
+                    erdInfo.setTranslateZ(earthZ);
+                    erdInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+                    erdInfo.setFill(Color.WHITE);
                     saturnText.setX(saturnX-400);
                     saturnText.setY(-1770);
                     saturnText.setTranslateZ(saturnZ-30);
@@ -419,12 +531,26 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(uranusZ - 8050);
                     uranusGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text uranusText = new Text("Der Uranus");
+                    Text uranusInfo = new Text("Uranus \n" +
+                            "Mittlerer Radius:[äquatorial]: 25,559km, [polar}: 24,973km \n" +
+                            "Masse: 14,536 Me  \n" +
+                            "Orbitalperiode: 84,02 Jahre \n" +
+                            "Rotationsperiode:17,24h \n" +
+                            "Anzahl der Monde: 27 bekannte, größten: Titania, Oberon, Umbriel, Ariel, Miranda \n" +
+                            "Orbitaldistanz zur Sonne: 19,891 AE \n" +
+                            "Besondere Merkmale: besitzt ebenso Ringsystem, kältester Planet, scheint auf der „Seite zu \n" +
+                            "liegen“, weist mehr als 90 zur Ekliptik geneigte Rotationsachse auf \n");
+                    uranusInfo.setX(uranusX-3700);
+                    uranusInfo.setY(970);
+                    uranusInfo.setTranslateZ(uranusZ-30);
+                    uranusInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 90));
+                    uranusInfo.setFill(Color.WHITE);
                     uranusText.setX(uranusX-400);
                     uranusText.setY(-1700);
                     uranusText.setTranslateZ(uranusZ-30);
                     uranusText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
                     uranusText.setFill(Color.WHITE);
-                    uranusGruppe.getChildren().add(uranusText);
+                    uranusGruppe.getChildren().addAll(uranusText,uranusInfo);
 
                 }
 
@@ -441,22 +567,38 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(neptuneZ - 8050);
                     neptuneGruppe.getChildren().removeIf(node -> node instanceof Text);
-                    Text neptuneText = new Text("Der Saturn");
-                    neptuneText.setX(saturnX-400);
+                    Text neptuneText = new Text("Der Neptun");
+                    Text neptuneInfo = new Text(" Neptun \n" +
+                            "Durchmesser: knapp 50.000 km  \n" +
+                            "Mittlerer Radius: [äquatorial]: 25,746km [polar}: 24,341km \n" +
+                            "Masse: 17,147 Me \n" +
+                            "Orbitalperiode: 164,79 Jahre \n" +
+                            "Rotationsperiode: 16,11h \n" +
+                            "Anzahl der Monde: 14 bekannte : größter: Tritan: geologisch aktiver Mond, Rotation ist \n" +
+                            "retrograd \n" +
+                            "Orbitaldistanz zur Sonne: 30,071 AE");
+                    neptuneInfo.setX(neptuneX-400);
+                    neptuneInfo.setY(-970);
+                    neptuneInfo.setTranslateZ(neptuneZ-30);
+                    neptuneInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 60));
+                    neptuneInfo.setFill(Color.WHITE);
+                    neptuneText.setX(neptuneX-400);
                     neptuneText.setY(-1770);
-                    neptuneText.setTranslateZ(saturnZ-30);
+                    neptuneText.setTranslateZ(neptuneZ-30);
                     neptuneText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
                     neptuneText.setFill(Color.WHITE);
-                    neptuneGruppe.getChildren().add(neptuneText);
+                    neptuneGruppe.getChildren().addAll(neptuneText,neptuneInfo);
+
                 }
 
                 // Sonne dreht sich um sich selbst
-                sunRotationAngle -= 0.2; // Geschwindigkeit der Rotation
+                sunRotationAngle -= 0.1; // Geschwindigkeit der Rotation
                 sonne.setRotate(sunRotationAngle); // Rotation auf die Sonne anwenden
             }
         };
         timer.start();
     }
+
 
     private void initMouseControl(SmartGroup group, Scene scene,Stage stage) {
         Rotate xRotate = new Rotate();
@@ -500,13 +642,14 @@ public class SonnenSystem extends Application {
     }
 
 
+
     private ImageView prepareImageView(){
         Image image = new Image(getClass().getResourceAsStream("/images/stars_milky_way.jpg"));
         ImageView imageView = new ImageView(image);
 
 
         imageView.setFitHeight(200000);
-        imageView.setFitWidth(350000);
+        imageView.setFitWidth(450000);
 
         imageView.setTranslateX(-imageView.getFitWidth() / 2); // Horizontal zentrieren
         imageView.setTranslateY(-imageView.getFitHeight() / 2); // Vertikal zentrieren
@@ -552,7 +695,7 @@ public class SonnenSystem extends Application {
                 isVenusCameraActive = !isVenusCameraActive;
                 switchCamera(secondCamera, isVenusCameraActive, venusGruppe);
                 break;
-            default:
+             default:
                 break;
         }
     }
