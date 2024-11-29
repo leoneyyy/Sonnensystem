@@ -1,25 +1,14 @@
 package com.projekt.oum_projekt;
 
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.*;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.Sphere;
@@ -31,10 +20,6 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.scene.SubScene;
-import javafx.util.Duration;
-
-
 import java.io.IOException;
 
 public class SonnenSystem extends Application {
@@ -56,16 +41,12 @@ public class SonnenSystem extends Application {
     private boolean isNeptuneCameraActive = false;
     private boolean isMarsCameraActive = false;
     private boolean isAllCameraActive = true;
-    private boolean isTopDownCameraActive = false;
-
 
     public PerspectiveCamera camera;
     public PerspectiveCamera secondCamera;
     public PerspectiveCamera topDownCamera;
-
     double saturnX;
     double saturnZ;
-
     SmartGroup sonnenGruppe;
     SmartGroup erdGruppe;
     SmartGroup merkurGruppe;
@@ -76,10 +57,7 @@ public class SonnenSystem extends Application {
     SmartGroup marsGruppe;
     SmartGroup uranusGruppe;
     SmartGroup neptuneGruppe;
-
-
     private Scene scene;
-
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -105,7 +83,6 @@ public class SonnenSystem extends Application {
         topDownCamera.setTranslateZ(0);
         topDownCamera.setRotate(90);
         topDownCamera.setRotationAxis(Rotate.X_AXIS);
-
 
         //Sonne
         Sonne sonne = new Sonne();
@@ -148,7 +125,6 @@ public class SonnenSystem extends Application {
         SaturnRing saturnRing = new SaturnRing(2046, 30, "/Images/saturn_ring.png");
         saturnGruppe.getChildren().add(saturnRing.getRing());
 
-
         //Jupiter
         Jupiter jupiter = new Jupiter();
         jupiterGruppe = new SmartGroup();
@@ -183,14 +159,11 @@ public class SonnenSystem extends Application {
 
 
         Text text = new Text("Interaktive Darstellung des Sonnensystems");
-        //text.setScaleX(55); // Beispielwert, anpassen nach Bedarf
-        //text.setScaleY(55);
         text.setX(-3000);
         text.setY(-4280);
         text.setTranslateZ(-30000*3);
         text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,250));
         text.setFill(Color.WHITE);
-
         Text beschreibung = new Text("Tasten um auf Planeten zu zoomen: \nErde: Taste E\nMond: Taste M\nMars: Taste A\nMerkur: Taste Y\nUranus: Taste U\nVenus: Taste V\nSaturn: Taste S\nJupiter: Taste J\nNeptun: Taste N");
         beschreibung.setX(-8000);
         beschreibung.setY(2000);
@@ -198,8 +171,6 @@ public class SonnenSystem extends Application {
         beschreibung.setFont(Font.font("verdana",FontWeight.NORMAL, FontPosture.REGULAR , 130));
         beschreibung.setFill(Color.WHITE);
         sonnenGruppe.getChildren().addAll(text, beschreibung);
-
-
 
         erdGruppe.getChildren().add(mondGruppe);
         sonnenGruppe.getChildren().add(erdGruppe);
@@ -211,27 +182,20 @@ public class SonnenSystem extends Application {
         sonnenGruppe.getChildren().add(uranusGruppe);
         sonnenGruppe.getChildren().add(neptuneGruppe);
 
-
-
         //Scene
         scene = new Scene(root, width, height, true,null);
         scene.setFill(Color.BLACK);
         scene.setCamera(camera);
-
         scene.setOnKeyPressed(event -> handleKeyPress(event));
-
         if (!isAllCameraActive) {
             initMouseControl(sonnenGruppe, scene, stage);
         }
-
-
         stage.setTitle("Sonnensystem");
         stage.setScene(scene);
         stage.show();
-
         prepareAnimation(erde.getPlanetSphere(), mond.getPlanetSphere(), sonne.getPlanetSphere(), merkur.getPlanetSphere(), venus.getPlanetSphere(),neptune.getPlanetSphere(), saturn.getPlanetSphere(),mars.getPlanetSphere(), uranus.getPlanetSphere(), jupiter.getPlanetSphere(),saturnRing.getRing());
-
     }
+
     private void prepareAnimation(Sphere erde, Sphere mond, Sphere sonne, Sphere merkur, Sphere venus, Sphere neptune, Sphere saturn , Sphere mars, Sphere uranus, Sphere jupiter, Cylinder ring) {
         AnimationTimer timer = new AnimationTimer() {
             private double earthAngle = 0;    // Winkel für die Umlaufbahn der Erde um die Sonne
@@ -460,19 +424,11 @@ public class SonnenSystem extends Application {
                             "Mittlerer Radius: : [äquatorial]: 71,492km  [polar]: 66,854km \n" +
                             "Masse: 2,5 mal die Masse aller Planeten zusammengenommen (entspricht ca. 318 \n" +
                             "Erdmassen) 317,8 Me \n" +
-                            "Orbitalperiode: 11,86 Jahre \n" +
-                            "Rotationsperiode: 9,925h \n" +
-                            "Atmosphäre: hat keine feste Oberfläche, Druck 10 bar als unteres Ende der Troposphäre  \n" +
-                            "Anzahl der Monde: aktuell 79, viele weniger als 10km Durchmesser; vier Galilei’schen \n" +
-                            "Monde: Io, Europa, Ganymed, Kallisto \n" +
-                            "Ganymed größter Mond des Sonnensystems mit Durchmesser über 5200km (etwa 1,5fache \n" +
-                            "vom Erdmond) \n" +
-                            "Orbitaldistanz zur Sonne: 5,203 AE \n" +
-                            "Besondere Merkmale: gewaltige Anziehungskraft ");
-                    jupiterInfo.setX(jupiterX-4200);
-                    jupiterInfo.setY(970);
-                    jupiterInfo.setTranslateZ(jupiterZ-30);
-                    jupiterInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 70));
+                            "Orbitalperiode: 11,86 Jahre \n");
+                    jupiterInfo.setX(jupiterX-645);
+                    jupiterInfo.setY(200);
+                    jupiterInfo.setTranslateZ(jupiterZ-7500);
+                    jupiterInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
                     jupiterInfo.setFill(Color.WHITE);
                     jupiterText.setX(jupiterX-400);
                     jupiterText.setY(-1770);
@@ -495,27 +451,26 @@ public class SonnenSystem extends Application {
                 if (isSaturnCameraActive) {
                     secondCamera.setTranslateX(saturnX);
                     secondCamera.setTranslateY(0);
-                    secondCamera.setTranslateZ(saturnZ - 8050);
+                    secondCamera.setTranslateZ(saturnZ - 8900);
                     saturnGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text saturnText = new Text("Der Saturn");
-                    Text erdInfo = new Text("Erde\n" +
-                            "Mittlerer Radius: 6371km\n" +
-                            "Masse: 1 Me\n" +
-                            "Orbitalperiode: 365,24\n" +
-                            "Tage Rotationsperiode: 23,93h\n" +
-                            "Anzahl der Monde: einen\n" +
-                            "Orbitaldistanz zur Sonne: 1,0 AE");
-                    erdInfo.setX(earthX-400);
-                    erdInfo.setY(50);
-                    erdInfo.setTranslateZ(earthZ);
-                    erdInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
-                    erdInfo.setFill(Color.WHITE);
+                    Text saturnInfo = new Text("Saturn – „Herr der Ringe“ \n" +
+                            "Durchmesser: 120.000km, 20.000km weniger als Jupiter \n" +
+                            "Mittlerer Radius: [äquatorial]: 60,268km  [polar]: 54,364km \n" +
+                            "Masse: 95,152 Me  \n" +
+                            "Orbitalperiode: 29,4 Jahre \n" +
+                            "Rotationsperiode: 10,233h");
+                    saturnInfo.setX(saturnX-645);
+                    saturnInfo.setY(200);
+                    saturnInfo.setTranslateZ(saturnZ-7500);
+                    saturnInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+                    saturnInfo.setFill(Color.WHITE);
                     saturnText.setX(saturnX-400);
                     saturnText.setY(-1770);
                     saturnText.setTranslateZ(saturnZ-30);
                     saturnText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
                     saturnText.setFill(Color.WHITE);
-                    saturnGruppe.getChildren().add(saturnText);
+                    saturnGruppe.getChildren().addAll(saturnText,saturnInfo);
                 }
 
                 // Uranus bewegt sich um die Sonne
@@ -528,22 +483,18 @@ public class SonnenSystem extends Application {
                 if (isUranusCameraActive) {
                     secondCamera.setTranslateX(uranusX);
                     secondCamera.setTranslateY(0);
-                    secondCamera.setTranslateZ(uranusZ - 8050);
+                    secondCamera.setTranslateZ(uranusZ - 8900);
                     uranusGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text uranusText = new Text("Der Uranus");
                     Text uranusInfo = new Text("Uranus \n" +
                             "Mittlerer Radius:[äquatorial]: 25,559km, [polar}: 24,973km \n" +
                             "Masse: 14,536 Me  \n" +
                             "Orbitalperiode: 84,02 Jahre \n" +
-                            "Rotationsperiode:17,24h \n" +
-                            "Anzahl der Monde: 27 bekannte, größten: Titania, Oberon, Umbriel, Ariel, Miranda \n" +
-                            "Orbitaldistanz zur Sonne: 19,891 AE \n" +
-                            "Besondere Merkmale: besitzt ebenso Ringsystem, kältester Planet, scheint auf der „Seite zu \n" +
-                            "liegen“, weist mehr als 90 zur Ekliptik geneigte Rotationsachse auf \n");
-                    uranusInfo.setX(uranusX-3700);
-                    uranusInfo.setY(970);
-                    uranusInfo.setTranslateZ(uranusZ-30);
-                    uranusInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 90));
+                            "Rotationsperiode:17,24h \n" +"Anzahl der Monde: aktuell 62 bekannte Monde, Titan und Enceladus scheinen geologisch aktiv zu sein" );
+                    uranusInfo.setX(uranusX-645);
+                    uranusInfo.setY(200);
+                    uranusInfo.setTranslateZ(uranusZ-7500);
+                    uranusInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
                     uranusInfo.setFill(Color.WHITE);
                     uranusText.setX(uranusX-400);
                     uranusText.setY(-1700);
@@ -565,22 +516,20 @@ public class SonnenSystem extends Application {
                 if (isNeptuneCameraActive) {
                     secondCamera.setTranslateX(neptuneX);
                     secondCamera.setTranslateY(0);
-                    secondCamera.setTranslateZ(neptuneZ - 8050);
+                    secondCamera.setTranslateZ(neptuneZ - 8900);
                     neptuneGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text neptuneText = new Text("Der Neptun");
-                    Text neptuneInfo = new Text(" Neptun \n" +
+                    Text neptuneInfo = new Text("Neptun \n" +
                             "Durchmesser: knapp 50.000 km  \n" +
                             "Mittlerer Radius: [äquatorial]: 25,746km [polar}: 24,341km \n" +
                             "Masse: 17,147 Me \n" +
                             "Orbitalperiode: 164,79 Jahre \n" +
                             "Rotationsperiode: 16,11h \n" +
-                            "Anzahl der Monde: 14 bekannte : größter: Tritan: geologisch aktiver Mond, Rotation ist \n" +
-                            "retrograd \n" +
-                            "Orbitaldistanz zur Sonne: 30,071 AE");
-                    neptuneInfo.setX(neptuneX-400);
-                    neptuneInfo.setY(-970);
-                    neptuneInfo.setTranslateZ(neptuneZ-30);
-                    neptuneInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 60));
+                            "Anzahl der Monde: 14 bekannte : größter: Tritan: geologisch aktiver Mond, Rotation ist \n");
+                    neptuneInfo.setX(neptuneX-640);
+                    neptuneInfo.setY(170);
+                    neptuneInfo.setTranslateZ(neptuneZ-7500);
+                    neptuneInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
                     neptuneInfo.setFill(Color.WHITE);
                     neptuneText.setX(neptuneX-400);
                     neptuneText.setY(-1770);
