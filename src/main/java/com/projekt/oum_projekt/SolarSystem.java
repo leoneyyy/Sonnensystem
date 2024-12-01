@@ -19,7 +19,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.util.Objects;
 
-public class SonnenSystem extends Application {
+public class SolarSystem extends Application {
     public static double width = 0;
     public static double height = 0;
 
@@ -41,16 +41,16 @@ public class SonnenSystem extends Application {
     double saturnX;
     double saturnZ;
     double speed;
-    SmartGroup sonnenGruppe;
-    SmartGroup erdGruppe;
-    SmartGroup merkurGruppe;
-    SmartGroup mondGruppe;
-    SmartGroup venusGruppe;
-    SmartGroup saturnGruppe;
-    SmartGroup jupiterGruppe;
-    SmartGroup marsGruppe;
-    SmartGroup uranusGruppe;
-    SmartGroup neptuneGruppe;
+    SmartGroup sunGroup;
+    SmartGroup earthGroup;
+    SmartGroup mercuryGroup;
+    SmartGroup moonGroup;
+    SmartGroup venusGroup;
+    SmartGroup saturnGroup;
+    SmartGroup jupiterGroup;
+    SmartGroup marsGroup;
+    SmartGroup uranusGroup;
+    SmartGroup neptuneGroup;
     private Scene scene;
 
     @Override
@@ -72,63 +72,63 @@ public class SonnenSystem extends Application {
         secondCamera.setFarClip(200000);
 
         //Sonne
-        Sonne sonne = new Sonne();
-        sonnenGruppe = new SmartGroup();
-        sonnenGruppe.getChildren().add(sonne.prepareSonne());
+        Sun sun = new Sun();
+        sunGroup = new SmartGroup();
+        sunGroup.getChildren().add(sun.prepareSonne());
 
         //Erde
-        Erde erde  = new Erde();
-        erdGruppe = new SmartGroup();
-        erdGruppe.getChildren().add(erde.prepareErde());
+        Earth earth = new Earth();
+        earthGroup = new SmartGroup();
+        earthGroup.getChildren().add(earth.prepareErde());
 
         //Merkur
-        Merkur merkur = new Merkur();
-        merkurGruppe = new SmartGroup();
-        merkurGruppe.getChildren().add(merkur.prepareMerkur());
+        Mercury mercury = new Mercury();
+        mercuryGroup = new SmartGroup();
+        mercuryGroup.getChildren().add(mercury.prepareMerkur());
 
         //Mond
-        Mond mond  = new Mond();
-        mondGruppe = new SmartGroup();
-        mondGruppe.getChildren().add(mond.prepareMond());
+        Moon moon = new Moon();
+        moonGroup = new SmartGroup();
+        moonGroup.getChildren().add(moon.prepareMond());
 
         //Venus
         Venus venus  = new Venus();
-        venusGruppe = new SmartGroup();
-        venusGruppe.getChildren().add(venus.prepareVenus());
+        venusGroup = new SmartGroup();
+        venusGroup.getChildren().add(venus.prepareVenus());
 
         //Saturn
         Saturn saturn = new Saturn();
-        saturnGruppe = new SmartGroup();
-        saturnGruppe.getChildren().add(saturn.prepareSaturn());
+        saturnGroup = new SmartGroup();
+        saturnGroup.getChildren().add(saturn.prepareSaturn());
 
         //SaturnRing
         SaturnRing saturnRing = new SaturnRing(2046, 30, "/Images/saturn_ring.png");
-        saturnGruppe.getChildren().add(saturnRing.getRing());
+        saturnGroup.getChildren().add(saturnRing.getRing());
 
         //Jupiter
         Jupiter jupiter = new Jupiter();
-        jupiterGruppe = new SmartGroup();
-        jupiterGruppe.getChildren().add(jupiter.prepareJupiter());
+        jupiterGroup = new SmartGroup();
+        jupiterGroup.getChildren().add(jupiter.prepareJupiter());
 
         //Mars
         Mars mars = new Mars();
-        marsGruppe = new SmartGroup();
-        marsGruppe.getChildren().add(mars.prepareMars());
+        marsGroup = new SmartGroup();
+        marsGroup.getChildren().add(mars.prepareMars());
 
         //Uranus
         Uranus uranus = new Uranus();
-        uranusGruppe = new SmartGroup();
-        uranusGruppe.getChildren().add(uranus.prepareUranus());
+        uranusGroup = new SmartGroup();
+        uranusGroup.getChildren().add(uranus.prepareUranus());
 
 
         //Neptune
         Neptune neptune = new Neptune();
-        neptuneGruppe = new SmartGroup();
-        neptuneGruppe.getChildren().add(neptune.prepareNeptune());
+        neptuneGroup = new SmartGroup();
+        neptuneGroup.getChildren().add(neptune.prepareNeptune());
 
 
         Group root = new Group();
-        root.getChildren().add(sonnenGruppe);
+        root.getChildren().add(sunGroup);
         root.getChildren().add(prepareImageView());
 
         Text text = new Text("Interaktive Darstellung des Sonnensystems");
@@ -143,17 +143,17 @@ public class SonnenSystem extends Application {
         beschreibung.setTranslateZ(-30000*3);
         beschreibung.setFont(Font.font("verdana",FontWeight.NORMAL, FontPosture.REGULAR , 130));
         beschreibung.setFill(Color.WHITE);
-        sonnenGruppe.getChildren().addAll(text, beschreibung);
+        sunGroup.getChildren().addAll(text, beschreibung);
 
-        erdGruppe.getChildren().add(mondGruppe);
-        sonnenGruppe.getChildren().add(erdGruppe);
-        sonnenGruppe.getChildren().add(merkurGruppe);
-        sonnenGruppe.getChildren().add(venusGruppe);
-        sonnenGruppe.getChildren().add(saturnGruppe);
-        sonnenGruppe.getChildren().add(jupiterGruppe);
-        sonnenGruppe.getChildren().add(marsGruppe);
-        sonnenGruppe.getChildren().add(uranusGruppe);
-        sonnenGruppe.getChildren().add(neptuneGruppe);
+        earthGroup.getChildren().add(moonGroup);
+        sunGroup.getChildren().add(earthGroup);
+        sunGroup.getChildren().add(mercuryGroup);
+        sunGroup.getChildren().add(venusGroup);
+        sunGroup.getChildren().add(saturnGroup);
+        sunGroup.getChildren().add(jupiterGroup);
+        sunGroup.getChildren().add(marsGroup);
+        sunGroup.getChildren().add(uranusGroup);
+        sunGroup.getChildren().add(neptuneGroup);
 
         //Scene
         scene = new Scene(root, width, height, true,null);
@@ -163,7 +163,7 @@ public class SonnenSystem extends Application {
         stage.setTitle("Sonnensystem");
         stage.setScene(scene);
         stage.show();
-        prepareAnimation(erde.getPlanetSphere(), mond.getPlanetSphere(), sonne.getPlanetSphere(), merkur.getPlanetSphere(), venus.getPlanetSphere(),neptune.getPlanetSphere(), saturn.getPlanetSphere(),mars.getPlanetSphere(), uranus.getPlanetSphere(), jupiter.getPlanetSphere(),saturnRing.getRing());
+        prepareAnimation(earth.getPlanetSphere(), moon.getPlanetSphere(), sun.getPlanetSphere(), mercury.getPlanetSphere(), venus.getPlanetSphere(),neptune.getPlanetSphere(), saturn.getPlanetSphere(),mars.getPlanetSphere(), uranus.getPlanetSphere(), jupiter.getPlanetSphere(),saturnRing.getRing());
     }
 
     private void prepareAnimation(Sphere erde, Sphere mond, Sphere sonne, Sphere merkur, Sphere venus, Sphere neptune, Sphere saturn , Sphere mars, Sphere uranus, Sphere jupiter, Cylinder ring) {
@@ -210,7 +210,7 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(earthZ - 850);
                     scene.setCamera(secondCamera);
 
-                    erdGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    earthGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text erdText = new Text("Die Erde");
                     Text erdInfo = new Text("Drücke Taste: E um zurückzukehren\n\n"+
                             "Mittlerer Radius: 6371km\n" +
@@ -229,7 +229,7 @@ public class SonnenSystem extends Application {
                     erdText.setTranslateZ(earthZ);
                     erdText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
                     erdText.setFill(Color.WHITE);
-                    erdGruppe.getChildren().addAll(erdText,erdInfo);
+                    earthGroup.getChildren().addAll(erdText,erdInfo);
                 }
 
 
@@ -249,7 +249,7 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(earthX+moonX);
                     secondCamera.setTranslateY(0); // Leicht über dem Mond
                     secondCamera.setTranslateZ(earthZ+moonZ - 350);
-                    mondGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    moonGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text mondText = new Text("Der Mond");
                     Text mondInfo = new Text("Drücke Taste: M um zurückzukehren\n\n"+
                             "Mittlerer Radius: 1737,5km \n" +
@@ -266,7 +266,7 @@ public class SonnenSystem extends Application {
                     mondText.setTranslateZ(earthZ+moonZ+600);
                     mondText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 30));
                     mondText.setFill(Color.WHITE);
-                    mondGruppe.getChildren().addAll(mondText,mondInfo);
+                    moonGroup.getChildren().addAll(mondText,mondInfo);
                 }
 
                 // Merkur bewegt sich in einer schnelleren Umlaufbahn um die Sonne
@@ -284,26 +284,26 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(mercuryX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(mercuryZ - 1350);
-                    merkurGruppe.getChildren().removeIf(node -> node instanceof Text);
-                    Text merkurText = new Text("Der Merkur");
-                    Text mekurInfo = new Text("Drücke Taste: Y um zurückzukehren\n\n"+
+                    mercuryGroup.getChildren().removeIf(node -> node instanceof Text);
+                    Text mercuryText = new Text("Der Merkur");
+                    Text mercuryInfo = new Text("Drücke Taste: Y um zurückzukehren\n\n"+
                             "Mittlerer Radius: 2439,7km\n" +
                             "Masse: 0,055 Me\n" +
                             "Orbitalperiode: 87,97 Tage\n" +
                             "Rotationsperiode: 58,67 Tage\n" +
                             "Anzahl der Monde: keine\n" +
                             "Orbitaldistanz zur Sonne: mittleren Abstand von 0,4 AE\n");
-                    mekurInfo.setX(mercuryX-600);
-                    mekurInfo.setY(100);
-                    mekurInfo.setTranslateZ(mercuryZ);
-                    mekurInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 26));
-                    mekurInfo.setFill(Color.WHITE);
-                    merkurText.setX(mercuryX-90);
-                    merkurText.setY(-340);
-                    merkurText.setTranslateZ(mercuryZ+300);
-                    merkurText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 34));
-                    merkurText.setFill(Color.WHITE);
-                    merkurGruppe.getChildren().addAll(merkurText,mekurInfo);
+                    mercuryInfo.setX(mercuryX-600);
+                    mercuryInfo.setY(100);
+                    mercuryInfo.setTranslateZ(mercuryZ);
+                    mercuryInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 26));
+                    mercuryInfo.setFill(Color.WHITE);
+                    mercuryText.setX(mercuryX-90);
+                    mercuryText.setY(-340);
+                    mercuryText.setTranslateZ(mercuryZ+300);
+                    mercuryText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 34));
+                    mercuryText.setFill(Color.WHITE);
+                    mercuryGroup.getChildren().addAll(mercuryText,mercuryInfo);
 
                 }
 
@@ -320,7 +320,7 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(venusX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(venusZ - 2050);
-                    venusGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    venusGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text venusText = new Text("Die Venus");
                     Text venusInfo = new Text("Drücke Taste: V um zurückzukehren\n\n"+
                             "Mittlerer Radius: 6051,8km \n" +
@@ -340,7 +340,7 @@ public class SonnenSystem extends Application {
                     venusText.setTranslateZ(venusZ-30);
                     venusText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 40));
                     venusText.setFill(Color.WHITE);
-                    venusGruppe.getChildren().addAll(venusText,venusInfo);
+                    venusGroup.getChildren().addAll(venusText,venusInfo);
                     
                 }
 
@@ -357,7 +357,7 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(marsX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(marsZ - 1050);
-                    marsGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    marsGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text marsText = new Text("Der Mars");
                     Text marsInfo = new Text("Drücke Taste: A um zurückzukehren\n\n"+
                             "Masse: 0,107 Erdmasse – erheblich kleiner als Erde / 0,151 Me \n" +
@@ -376,7 +376,7 @@ public class SonnenSystem extends Application {
                     marsText.setTranslateZ(marsZ+400);
                     marsText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 30));
                     marsText.setFill(Color.WHITE);
-                    marsGruppe.getChildren().addAll(marsInfo,marsText);
+                    marsGroup.getChildren().addAll(marsInfo,marsText);
                 }
 
                 // Jupiter bewegt sich um die Sonne
@@ -393,7 +393,7 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(jupiterX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(jupiterZ - 8900);
-                    jupiterGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    jupiterGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text jupiterText = new Text("Der Jupiter");
                     Text jupiterInfo = new Text("Drücke Taste: J um zurückzukehren\n\n"+
                             "Mittlerer Radius: : [äquatorial]: 71,492km  [polar]: 66,854km \n" +
@@ -412,7 +412,7 @@ public class SonnenSystem extends Application {
                     jupiterText.setTranslateZ(jupiterZ-30);
                     jupiterText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
                     jupiterText.setFill(Color.WHITE);
-                    jupiterGruppe.getChildren().addAll(jupiterText,jupiterInfo);
+                    jupiterGroup.getChildren().addAll(jupiterText,jupiterInfo);
                 }
 
                 // Saturn bewegt sich um die Sonne
@@ -432,7 +432,7 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(saturnX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(saturnZ - 8900);
-                    saturnGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    saturnGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text saturnText = new Text("Der Saturn");
                     Text saturnInfo = new Text("Drücke Taste: S um zurückzukehren\n\n"+
                          "Mittlerer Radius: [äquatorial]: 60,268km  [polar]: 54,364km \n" +
@@ -450,7 +450,7 @@ public class SonnenSystem extends Application {
                     saturnText.setTranslateZ(saturnZ-30);
                     saturnText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
                     saturnText.setFill(Color.WHITE);
-                    saturnGruppe.getChildren().addAll(saturnText,saturnInfo);
+                    saturnGroup.getChildren().addAll(saturnText,saturnInfo);
                 }
 
                 // Uranus bewegt sich um die Sonne
@@ -466,7 +466,7 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(uranusX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(uranusZ - 8900);
-                    uranusGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    uranusGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text uranusText = new Text("Der Uranus");
                     Text uranusInfo = new Text("Drücke Taste: U um zurückzukehren\n\n"+
                             "Mittlerer Radius:[äquatorial]: 25,559km, [polar}: 24,973km \n" +
@@ -484,7 +484,7 @@ public class SonnenSystem extends Application {
                     uranusText.setTranslateZ(uranusZ-30);
                     uranusText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
                     uranusText.setFill(Color.WHITE);
-                    uranusGruppe.getChildren().addAll(uranusText,uranusInfo);
+                    uranusGroup.getChildren().addAll(uranusText,uranusInfo);
 
                 }
 
@@ -502,7 +502,7 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateX(neptuneX);
                     secondCamera.setTranslateY(0);
                     secondCamera.setTranslateZ(neptuneZ - 8900);
-                    neptuneGruppe.getChildren().removeIf(node -> node instanceof Text);
+                    neptuneGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text neptuneText = new Text("Der Neptun");
                     Text neptuneInfo = new Text("Drücke Taste: N um zurückzukehren\n\n"+
                             "Mittlerer Radius: [äquatorial]: 25,746km [polar}: 24,341km \n" +
@@ -520,7 +520,7 @@ public class SonnenSystem extends Application {
                     neptuneText.setTranslateZ(neptuneZ-30);
                     neptuneText.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 140));
                     neptuneText.setFill(Color.WHITE);
-                    neptuneGruppe.getChildren().addAll(neptuneText,neptuneInfo);
+                    neptuneGroup.getChildren().addAll(neptuneText,neptuneInfo);
 
                 }
                 // Sonne dreht sich um sich selbst
@@ -554,39 +554,39 @@ public class SonnenSystem extends Application {
         switch (event.getCode()) {
             case E:
                 isEarthCameraActive = !isEarthCameraActive;
-                toggleCamera(KeyCode.E, secondCamera, isEarthCameraActive, erdGruppe);
+                toggleCamera(KeyCode.E, secondCamera, isEarthCameraActive, earthGroup);
                 break;
             case Y:
                 isMercuryCameraActive = !isMercuryCameraActive;
-                toggleCamera(KeyCode.Y, secondCamera, isMercuryCameraActive, merkurGruppe);
+                toggleCamera(KeyCode.Y, secondCamera, isMercuryCameraActive, mercuryGroup);
                 break;
             case M:
                 isMoonCameraActive = !isMoonCameraActive;
-                toggleCamera(KeyCode.M, secondCamera, isMoonCameraActive, mondGruppe);
+                toggleCamera(KeyCode.M, secondCamera, isMoonCameraActive, moonGroup);
                 break;
             case J:
                 isJupiterCameraActive = !isJupiterCameraActive;
-                toggleCamera(KeyCode.J, secondCamera, isJupiterCameraActive, jupiterGruppe);
+                toggleCamera(KeyCode.J, secondCamera, isJupiterCameraActive, jupiterGroup);
                 break;
             case S:
                 isSaturnCameraActive = !isSaturnCameraActive;
-                toggleCamera(KeyCode.S, secondCamera, isSaturnCameraActive, saturnGruppe);
+                toggleCamera(KeyCode.S, secondCamera, isSaturnCameraActive, saturnGroup);
                 break;
             case A:
                 isMarsCameraActive = !isMarsCameraActive;
-                toggleCamera(KeyCode.A, secondCamera, isMarsCameraActive, marsGruppe);
+                toggleCamera(KeyCode.A, secondCamera, isMarsCameraActive, marsGroup);
                 break;
             case U:
                 isUranusCameraActive = !isUranusCameraActive;
-                toggleCamera(KeyCode.U, secondCamera, isUranusCameraActive, uranusGruppe);
+                toggleCamera(KeyCode.U, secondCamera, isUranusCameraActive, uranusGroup);
                 break;
             case N:
                 isNeptuneCameraActive = !isNeptuneCameraActive;
-                toggleCamera(KeyCode.N, secondCamera, isNeptuneCameraActive, neptuneGruppe);
+                toggleCamera(KeyCode.N, secondCamera, isNeptuneCameraActive, neptuneGroup);
                 break;
             case V:
                 isVenusCameraActive = !isVenusCameraActive;
-                toggleCamera(KeyCode.V, secondCamera, isVenusCameraActive, venusGruppe);
+                toggleCamera(KeyCode.V, secondCamera, isVenusCameraActive, venusGroup);
                 break;
             case DIGIT1:
                 halfSpeed  = !halfSpeed;

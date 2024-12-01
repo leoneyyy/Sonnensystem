@@ -4,9 +4,9 @@ package com.projekt.oum_projekt;
 import javafx.scene.Node;
 
 
-public class Sonne extends Planet {
+public class Sun extends Planet {
 
-    public Sonne() {
+    public Sun() {
         super(16350, "/images/sun.jpg"); // Die Sonne hat einen Radius von 1000
     }
 

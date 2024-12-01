@@ -4,8 +4,8 @@ package com.projekt.oum_projekt;
 import javafx.scene.Node;
 
 
-public class Erde extends Planet {
-    public Erde() {
+public class Earth extends Planet {
+    public Earth() {
         super(150, "/images/earth.jpg");
     }
 
