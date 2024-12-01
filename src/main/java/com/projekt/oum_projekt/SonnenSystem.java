@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Cylinder;
@@ -13,11 +14,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import java.io.IOException;
+import java.util.Objects;
 
 public class SonnenSystem extends Application {
     public static double width = 0;
@@ -32,13 +32,12 @@ public class SonnenSystem extends Application {
     private boolean isJupiterCameraActive = false;
     private boolean isNeptuneCameraActive = false;
     private boolean isMarsCameraActive = false;
-    private boolean isAllCameraActive = true;
+    boolean isAllCameraActive = true;
     private boolean halfSpeed = false;
     private boolean quarterSpeed = false;
 
     public PerspectiveCamera camera;
     public PerspectiveCamera secondCamera;
-    public PerspectiveCamera topDownCamera;
     double saturnX;
     double saturnZ;
     double speed;
@@ -55,7 +54,7 @@ public class SonnenSystem extends Application {
     private Scene scene;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         //Fullscreen
         width =  Screen.getPrimary().getBounds().getWidth();
         height = Screen.getPrimary().getBounds().getHeight();
@@ -120,13 +119,13 @@ public class SonnenSystem extends Application {
         Uranus uranus = new Uranus();
         uranusGruppe = new SmartGroup();
         uranusGruppe.getChildren().add(uranus.prepareUranus());
-        Node uranusNode= uranus.prepareUranus();
+
 
         //Neptune
         Neptune neptune = new Neptune();
         neptuneGruppe = new SmartGroup();
         neptuneGruppe.getChildren().add(neptune.prepareNeptune());
-        Node neptuneNode= neptune.prepareNeptune();
+
 
         Group root = new Group();
         root.getChildren().add(sonnenGruppe);
@@ -160,7 +159,7 @@ public class SonnenSystem extends Application {
         scene = new Scene(root, width, height, true,null);
         scene.setFill(Color.BLACK);
         scene.setCamera(camera);
-        scene.setOnKeyPressed(event -> handleKeyPress(event));
+        scene.setOnKeyPressed(this::handleKeyPress);
         stage.setTitle("Sonnensystem");
         stage.setScene(scene);
         stage.show();
@@ -180,18 +179,6 @@ public class SonnenSystem extends Application {
             private double neptuneAngle = 0;  // Winkel für die Umlaufbahn des Neptuns um die Sonne
             private double sunRotationAngle = 0;
 
-            private final double sunRadius = 16350;        // Größere Darstellung der Sonne
-            private final double earthOrbitRadius = 1754 +sunRadius; // Entfernung Erde-Sonne
-            private final double moonOrbitRadius = 650;   // Entfernung Mond-Erde
-            private final double mercuryOrbitRadiusX = 678 +sunRadius; // Entfernung Merkur-Sonne
-            private final double mercuryOrbitRadiusZ = 678 +sunRadius;
-            private final double venusOrbitRadius = 1268 +sunRadius; // Entfernung Venus-Sonne
-            private final double marsOrbitRadius = 2670 +sunRadius;  // Entfernung Mars-Sonne
-            private final double jupiterOrbitRadius = 9113 +sunRadius;  // Entfernung Jupiter-Sonne
-            private final double saturnOrbitRadius = 16721 +sunRadius;  // Entfernung Saturn-Sonne
-            private final double uranusOrbitRadius = 33549 +sunRadius;  // Entfernung Uranus-Sonne
-            private final double neptuneOrbitRadius = 52489 +sunRadius; // Entfernung Neptun-Sonne
-
             @Override
             public void handle(long now) {
 
@@ -207,6 +194,10 @@ public class SonnenSystem extends Application {
 
                 // Erde bewegt sich in einer Umlaufbahn um die Sonne
                 earthAngle += 0.028/speed;  // Winkel für die Umlaufbahn der Erde
+                // Entfernung Erde-Sonne
+                // Größere Darstellung der Sonne
+                double sunRadius = 16350;
+                double earthOrbitRadius = 1754 + sunRadius;
                 double earthX = earthOrbitRadius * Math.cos(earthAngle) ;  // X-Koordinate der Erde
                 double earthZ = earthOrbitRadius * Math.sin(earthAngle);// Z-Koordinate der Erde
                 erde.setTranslateX(earthX);
@@ -221,17 +212,17 @@ public class SonnenSystem extends Application {
 
                     erdGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text erdText = new Text("Die Erde");
-                    Text erdInfo = new Text("Erde\n" +
+                    Text erdInfo = new Text("Drücke Taste: E um zurückzukehren\n\n"+
                             "Mittlerer Radius: 6371km\n" +
                             "Masse: 1 Me\n" +
                             "Orbitalperiode: 365,24\n" +
                             "Tage Rotationsperiode: 23,93h\n" +
                             "Anzahl der Monde: einen\n" +
                             "Orbitaldistanz zur Sonne: 1,0 AE");
-                    erdInfo.setX(earthX-400);
-                    erdInfo.setY(50);
-                    erdInfo.setTranslateZ(earthZ);
-                    erdInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+                    erdInfo.setX(earthX-430);
+                    erdInfo.setY(70);
+                    erdInfo.setTranslateZ(earthZ+60);
+                    erdInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 15));
                     erdInfo.setFill(Color.WHITE);
                     erdText.setX(earthX-40);
                     erdText.setY(-175);
@@ -245,6 +236,8 @@ public class SonnenSystem extends Application {
 
                 // Mond bewegt sich in einer Umlaufbahn um die Erde
                 moonAngle += 0.02;  // Schnellerer Winkel für die Umlaufbahn des Mondes
+                // Entfernung Mond-Erde
+                double moonOrbitRadius = 650;
                 double moonX = moonOrbitRadius * Math.cos(moonAngle);  // X-Koordinate des Mondes relativ zur Erde
                 double moonZ = moonOrbitRadius * Math.sin(moonAngle);
                 mond.rotateProperty().set(mond.getRotate() - 0.05/speed);// Z-Koordinate des Mondes relativ zur Erde
@@ -258,12 +251,13 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(earthZ+moonZ - 350);
                     mondGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text mondText = new Text("Der Mond");
-                    Text mondInfo = new Text("Mittlerer Radius: 1737,5km \n" +
+                    Text mondInfo = new Text("Drücke Taste: M um zurückzukehren\n\n"+
+                            "Mittlerer Radius: 1737,5km \n" +
                             "Rotationsperiode: 27,32 Tage \n" +
                             "Orbitalperiode: 27,32 Tage \n" +
                             "Entfernung zur Erde: 384,400km");
                     mondInfo.setX(earthX+moonX-450);
-                    mondInfo.setY(140);
+                    mondInfo.setY(100);
                     mondInfo.setTranslateZ(earthZ+moonZ+600);
                     mondInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
                     mondInfo.setFill(Color.WHITE);
@@ -277,7 +271,10 @@ public class SonnenSystem extends Application {
 
                 // Merkur bewegt sich in einer schnelleren Umlaufbahn um die Sonne
                 mercuryAngle += 0.047/speed;  // Schnellerer Winkel für die Umlaufbahn des Merkurs
+                // Entfernung Merkur-Sonne
+                double mercuryOrbitRadiusX = 678 + sunRadius;
                 double mercuryX = mercuryOrbitRadiusX * Math.cos(mercuryAngle);  // X-Koordinate des Merkurs
+                double mercuryOrbitRadiusZ = 678 + sunRadius;
                 double mercuryZ = mercuryOrbitRadiusZ * Math.sin(mercuryAngle);  // Z-Koordinate des Merkurs
                 merkur.setTranslateX(mercuryX);
                 merkur.setTranslateZ(mercuryZ);
@@ -289,16 +286,16 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(mercuryZ - 1350);
                     merkurGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text merkurText = new Text("Der Merkur");
-                    Text mekurInfo = new Text(
+                    Text mekurInfo = new Text("Drücke Taste: Y um zurückzukehren\n\n"+
                             "Mittlerer Radius: 2439,7km\n" +
                             "Masse: 0,055 Me\n" +
                             "Orbitalperiode: 87,97 Tage\n" +
                             "Rotationsperiode: 58,67 Tage\n" +
                             "Anzahl der Monde: keine\n" +
                             "Orbitaldistanz zur Sonne: mittleren Abstand von 0,4 AE\n");
-                    mekurInfo.setX(mercuryX-830);
-                    mekurInfo.setY(240);
-                    mekurInfo.setTranslateZ(mercuryZ+500);
+                    mekurInfo.setX(mercuryX-600);
+                    mekurInfo.setY(100);
+                    mekurInfo.setTranslateZ(mercuryZ);
                     mekurInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 26));
                     mekurInfo.setFill(Color.WHITE);
                     merkurText.setX(mercuryX-90);
@@ -312,6 +309,8 @@ public class SonnenSystem extends Application {
 
                 // Venus bewegt sich um die Sonne
                 venusAngle += 0.018/speed;  // Langsamerer Winkel für die Umlaufbahn der Venus
+                // Entfernung Venus-Sonne
+                double venusOrbitRadius = 1268 + sunRadius;
                 double venusX = venusOrbitRadius * Math.cos(venusAngle);
                 double venusZ = venusOrbitRadius * Math.sin(venusAngle);
                 venus.rotateProperty().set(venus.getRotate() + 0.010/speed);
@@ -323,7 +322,8 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(venusZ - 2050);
                     venusGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text venusText = new Text("Die Venus");
-                    Text venusInfo = new Text("Mittlerer Radius: 6051,8km \n" +
+                    Text venusInfo = new Text("Drücke Taste: V um zurückzukehren\n\n"+
+                            "Mittlerer Radius: 6051,8km \n" +
                             "Masse: 0,815 Me \n" +
                             "Orbitalperiode: 224,70 Tage \n" +
                             "Rotationsperiode: 243,02 Tage \n" +
@@ -346,6 +346,8 @@ public class SonnenSystem extends Application {
 
                 // Mars bewegt sich um die Sonne
                 marsAngle += 0.008/speed;  // Winkel für die Umlaufbahn des Mars
+                // Entfernung Mars-Sonne
+                double marsOrbitRadius = 2670 + sunRadius;
                 double marsX = marsOrbitRadius * Math.cos(marsAngle);
                 double marsZ = marsOrbitRadius * Math.sin(marsAngle);
                 mars.setTranslateX(marsX);
@@ -357,7 +359,8 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(marsZ - 1050);
                     marsGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text marsText = new Text("Der Mars");
-                    Text marsInfo = new Text("Masse: 0,107 Erdmasse – erheblich kleiner als Erde / 0,151 Me \n" +
+                    Text marsInfo = new Text("Drücke Taste: A um zurückzukehren\n\n"+
+                            "Masse: 0,107 Erdmasse – erheblich kleiner als Erde / 0,151 Me \n" +
                             "Mittlerer Radius: 3386,2km \n" +
                             "Orbitalperiode: 687 Tage \n" +
                             "Rotationsperiode: 24h 37min \n" +
@@ -378,6 +381,8 @@ public class SonnenSystem extends Application {
 
                 // Jupiter bewegt sich um die Sonne
                 jupiterAngle += 0.002/speed;  // Winkel für die Umlaufbahn des Jupiters
+                // Entfernung Jupiter-Sonne
+                double jupiterOrbitRadius = 9113 + sunRadius;
                 double jupiterX = jupiterOrbitRadius * Math.cos(jupiterAngle);
                 double jupiterZ = jupiterOrbitRadius * Math.sin(jupiterAngle);
                 jupiter.setTranslateX(jupiterX);
@@ -390,14 +395,15 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(jupiterZ - 8900);
                     jupiterGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text jupiterText = new Text("Der Jupiter");
-                    Text jupiterInfo = new Text("Mittlerer Radius: : [äquatorial]: 71,492km  [polar]: 66,854km \n" +
+                    Text jupiterInfo = new Text("Drücke Taste: J um zurückzukehren\n\n"+
+                            "Mittlerer Radius: : [äquatorial]: 71,492km  [polar]: 66,854km \n" +
                             "Masse: 2,5 mal die Masse aller Planeten zusammengenommen (entspricht ca. 318 \n" +
                             "Erdmassen) 317,8 Me \n" +
                             "Orbitalperiode: 11,86 Jahre \n"+
                             "Rotationsperiode: 9,925h\n"+
                             "Anzahl der Monde: aktuell 79, viele weniger als 10km Durchmesser; vier Galilei’schen Monde: Io, Europa, Ganymed, Kallisto");
                     jupiterInfo.setX(jupiterX-645);
-                    jupiterInfo.setY(200);
+                    jupiterInfo.setY(160);
                     jupiterInfo.setTranslateZ(jupiterZ-7500);
                     jupiterInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
                     jupiterInfo.setFill(Color.WHITE);
@@ -411,6 +417,8 @@ public class SonnenSystem extends Application {
 
                 // Saturn bewegt sich um die Sonne
                 saturnAngle += 0.0006/speed;  // Winkel für die Umlaufbahn des Saturns
+                // Entfernung Saturn-Sonne
+                double saturnOrbitRadius = 16721 + sunRadius;
                 saturnX = saturnOrbitRadius * Math.cos(saturnAngle);
                 saturnZ = saturnOrbitRadius * Math.sin(saturnAngle);
                 saturn.rotateProperty().set(saturn.getRotate() - 5.6/speed);
@@ -426,14 +434,14 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(saturnZ - 8900);
                     saturnGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text saturnText = new Text("Der Saturn");
-                    Text saturnInfo = new Text(
+                    Text saturnInfo = new Text("Drücke Taste: S um zurückzukehren\n\n"+
                          "Mittlerer Radius: [äquatorial]: 60,268km  [polar]: 54,364km \n" +
                             "Masse: 95,152 Me  \n" +
                             "Anzahl der Monde: aktuell 79, viele weniger als 10km Durchmesser; vier Galilei’schen Monde: Io, Europa, Ganymed, Kallisto\n"+
                             "Orbitalperiode: 29,4 Jahre \n" +
                             "Rotationsperiode: 10,233h");
                     saturnInfo.setX(saturnX-645);
-                    saturnInfo.setY(200);
+                    saturnInfo.setY(170);
                     saturnInfo.setTranslateZ(saturnZ-7500);
                     saturnInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
                     saturnInfo.setFill(Color.WHITE);
@@ -447,6 +455,8 @@ public class SonnenSystem extends Application {
 
                 // Uranus bewegt sich um die Sonne
                 uranusAngle += 0.0003/speed;  // Winkel für die Umlaufbahn des Uranus
+                // Entfernung Uranus-Sonne
+                double uranusOrbitRadius = 33549 + sunRadius;
                 double uranusX = uranusOrbitRadius * Math.cos(uranusAngle);
                 double uranusZ = uranusOrbitRadius * Math.sin(uranusAngle);
                 uranus.setTranslateX(uranusX);
@@ -458,13 +468,14 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(uranusZ - 8900);
                     uranusGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text uranusText = new Text("Der Uranus");
-                    Text uranusInfo = new Text("Mittlerer Radius:[äquatorial]: 25,559km, [polar}: 24,973km \n" +
+                    Text uranusInfo = new Text("Drücke Taste: U um zurückzukehren\n\n"+
+                            "Mittlerer Radius:[äquatorial]: 25,559km, [polar}: 24,973km \n" +
                             "Masse: 14,536 Me  \n" +
                             "Orbitalperiode: 84,02 Jahre \n" +
                             "Rotationsperiode:17,24h \n" +"Anzahl der Monde: aktuell 62 bekannte Monde, Titan und Enceladus scheinen geologisch aktiv zu sein\n"+
                             "Anzahl der Monde: 27 bekannte, größten: Titania, Oberon, Umbriel, Ariel, Miranda");
                     uranusInfo.setX(uranusX-645);
-                    uranusInfo.setY(200);
+                    uranusInfo.setY(150);
                     uranusInfo.setTranslateZ(uranusZ-7500);
                     uranusInfo.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 20));
                     uranusInfo.setFill(Color.WHITE);
@@ -480,6 +491,8 @@ public class SonnenSystem extends Application {
 
                 // Neptun bewegt sich um die Sonne
                 neptuneAngle += 0.0002/speed;  // Winkel für die Umlaufbahn des Neptuns
+                // Entfernung Neptun-Sonne
+                double neptuneOrbitRadius = 52489 + sunRadius;
                 double neptuneX = neptuneOrbitRadius * Math.cos(neptuneAngle);
                 double neptuneZ = neptuneOrbitRadius * Math.sin(neptuneAngle);
                 neptune.setTranslateX(neptuneX);
@@ -491,7 +504,7 @@ public class SonnenSystem extends Application {
                     secondCamera.setTranslateZ(neptuneZ - 8900);
                     neptuneGruppe.getChildren().removeIf(node -> node instanceof Text);
                     Text neptuneText = new Text("Der Neptun");
-                    Text neptuneInfo = new Text(
+                    Text neptuneInfo = new Text("Drücke Taste: N um zurückzukehren\n\n"+
                             "Mittlerer Radius: [äquatorial]: 25,746km [polar}: 24,341km \n" +
                             "Masse: 17,147 Me \n" +
                             "Orbitalperiode: 164,79 Jahre \n" +
@@ -519,7 +532,7 @@ public class SonnenSystem extends Application {
     }
 
     private ImageView prepareImageView(){
-        Image image = new Image(getClass().getResourceAsStream("/images/stars_milky_way.jpg"));
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/stars_milky_way.jpg")));
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(200000);
         imageView.setFitWidth(450000);
@@ -529,63 +542,75 @@ public class SonnenSystem extends Application {
         imageView.getTransforms().add(new Translate(0,0,70000));
         return imageView;
     }
+    private KeyCode activeCameraKey = null;
 
     private void handleKeyPress(KeyEvent event) {
+        // Überprüfen, ob eine Kamera aktiv ist und ob die gedrückte Taste die aktive Kamera-Taste ist
+        if (activeCameraKey != null && !event.getCode().equals(activeCameraKey)) {
+            // Wenn eine Kamera aktiv ist und eine andere Taste als die aktive Kamera-Taste gedrückt wird (außer Z), ignoriere den Tastendruck
+            return;
+        }
+
         switch (event.getCode()) {
             case E:
                 isEarthCameraActive = !isEarthCameraActive;
-                switchCamera(secondCamera, isEarthCameraActive,erdGruppe);
+                toggleCamera(KeyCode.E, secondCamera, isEarthCameraActive, erdGruppe);
                 break;
             case Y:
                 isMercuryCameraActive = !isMercuryCameraActive;
-                switchCamera(secondCamera, isMercuryCameraActive,merkurGruppe);
+                toggleCamera(KeyCode.Y, secondCamera, isMercuryCameraActive, merkurGruppe);
                 break;
             case M:
                 isMoonCameraActive = !isMoonCameraActive;
-                switchCamera(secondCamera, isMoonCameraActive,mondGruppe);
+                toggleCamera(KeyCode.M, secondCamera, isMoonCameraActive, mondGruppe);
                 break;
             case J:
                 isJupiterCameraActive = !isJupiterCameraActive;
-                switchCamera(secondCamera, isJupiterCameraActive,jupiterGruppe);
+                toggleCamera(KeyCode.J, secondCamera, isJupiterCameraActive, jupiterGruppe);
                 break;
             case S:
                 isSaturnCameraActive = !isSaturnCameraActive;
-                switchCamera(secondCamera, isSaturnCameraActive,saturnGruppe);
+                toggleCamera(KeyCode.S, secondCamera, isSaturnCameraActive, saturnGruppe);
                 break;
             case A:
                 isMarsCameraActive = !isMarsCameraActive;
-                switchCamera(secondCamera, isMarsCameraActive,marsGruppe);
+                toggleCamera(KeyCode.A, secondCamera, isMarsCameraActive, marsGruppe);
                 break;
             case U:
                 isUranusCameraActive = !isUranusCameraActive;
-                switchCamera(secondCamera, isUranusCameraActive,uranusGruppe);
+                toggleCamera(KeyCode.U, secondCamera, isUranusCameraActive, uranusGruppe);
                 break;
             case N:
                 isNeptuneCameraActive = !isNeptuneCameraActive;
-                switchCamera(secondCamera, isNeptuneCameraActive,neptuneGruppe);
+                toggleCamera(KeyCode.N, secondCamera, isNeptuneCameraActive, neptuneGruppe);
                 break;
             case V:
                 isVenusCameraActive = !isVenusCameraActive;
-                switchCamera(secondCamera, isVenusCameraActive, venusGruppe);
+                toggleCamera(KeyCode.V, secondCamera, isVenusCameraActive, venusGruppe);
                 break;
             case DIGIT1:
-                halfSpeed  =!halfSpeed;
+                halfSpeed  = !halfSpeed;
                 break;
             case DIGIT2:
-                quarterSpeed =!quarterSpeed;
+                quarterSpeed = !quarterSpeed;
                 break;
-           default:
+
+            default:
                 break;
         }
     }
-
-    private void switchCamera(Camera targetCamera, boolean isActive, Group group) {
+    private void toggleCamera(KeyCode key, Camera targetCamera, boolean isActive, Group group) {
         if (isActive) {
+            // Kamera aktivieren
             scene.setCamera(targetCamera);
-            isAllCameraActive = false;
+            activeCameraKey = key; // Speichert die aktive Kamera-Taste
+            isAllCameraActive = false; // Andere Tasten deaktivieren
         } else {
+            // Zurück zur Hauptkamera
             scene.setCamera(camera);
-            group.getChildren().removeIf(node -> node instanceof Text);// Zurück zur Hauptkamera
+            group.getChildren().removeIf(node -> node instanceof Text); // Entfernt Text-Elemente der spezifischen Gruppe
+            activeCameraKey = null; // Aktive Kamera-Taste zurücksetzen
+            isAllCameraActive = true; // Alle Tasten wieder aktivieren
         }
     }
 
