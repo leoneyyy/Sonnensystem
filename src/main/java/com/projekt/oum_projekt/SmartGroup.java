@@ -5,6 +5,7 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 
 public class SmartGroup extends Group {
+    //Quelle:https://www.youtube.com/watch?v=3yp6vhbud2U&t=261s&ab_channel=GenuineCoder
     Rotate r;
     Transform t = new Rotate();
 

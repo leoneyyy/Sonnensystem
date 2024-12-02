@@ -102,6 +102,7 @@ public class SolarSystem extends Application {
         saturnGroup.getChildren().add(saturn.prepareSaturn());
 
         //SaturnRing
+        //Quelle: https://www.solarsystemscope.com/textures/[zugegriffen am 4.11.2024]
         SaturnRing saturnRing = new SaturnRing(2046, 30, "/Images/saturn_ring.png");
         saturnGroup.getChildren().add(saturnRing.getRing());
 
@@ -137,7 +138,7 @@ public class SolarSystem extends Application {
         text.setTranslateZ(-30000*3);
         text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,250));
         text.setFill(Color.WHITE);
-        Text beschreibung = new Text("Tasten um auf Planeten zu zoomen: \nErde: Taste E\nMond: Taste M\nMars: Taste A\nMerkur: Taste Y\nUranus: Taste U\nVenus: Taste V\nSaturn: Taste S\nJupiter: Taste J\nNeptun: Taste N\n\nGeschwindkeit reduzieren:\nTaste 1:50% verlangsamen\nTaste 2: 75% verlangsamen");
+        Text beschreibung = new Text("Tasten um auf Planeten zu zoomen: \nErde: Taste E\nMond: Taste M\nMars: Taste A\nMerkur: Taste Y\nUranus: Taste U\nVenus: Taste V\nSaturn: Taste S\nJupiter: Taste J\nNeptun: Taste N\n\nGeschwindigkeit reduzieren:\nTaste 1:50% verlangsamen\nTaste 2: 75% verlangsamen\nZurücksetzen:Taste nochmal drücken");
         beschreibung.setX(-8000);
         beschreibung.setY(2000);
         beschreibung.setTranslateZ(-30000*3);
@@ -202,7 +203,7 @@ public class SolarSystem extends Application {
                 double earthZ = earthOrbitRadius * Math.sin(earthAngle);// Z-Koordinate der Erde
                 erde.setTranslateX(earthX);
                 erde.setTranslateZ(earthZ);
-                //System.out.println(earthX);
+
 
                 if (isEarthCameraActive) {
                     secondCamera.setTranslateX(earthX);
@@ -212,11 +213,12 @@ public class SolarSystem extends Application {
 
                     earthGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text erdText = new Text("Die Erde");
+                    //Quelle: "Expedition zu fremden Welten" von R. Jaumann,  U. Köhler, F. Sohl, D. Tirsch, S. Pieth - Springer Verlag, 2018 - S. 85
                     Text erdInfo = new Text("Drücke Taste: E um zurückzukehren\n\n"+
                             "Mittlerer Radius: 6371km\n" +
                             "Masse: 1 Me\n" +
-                            "Orbitalperiode: 365,24\n" +
-                            "Tage Rotationsperiode: 23,93h\n" +
+                            "Orbitalperiode: 365,24 Tage\n" +
+                            "Rotationsperiode: 23,93h\n" +
                             "Anzahl der Monde: einen\n" +
                             "Orbitaldistanz zur Sonne: 1,0 AE");
                     erdInfo.setX(earthX-430);
@@ -251,6 +253,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(earthZ+moonZ - 350);
                     moonGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text mondText = new Text("Der Mond");
+                    //Quelle: "Expedition zu fremden Welten" von R. Jaumann,  U. Köhler, F. Sohl, D. Tirsch, S. Pieth - Springer Verlag, 2018 - S. 98
                     Text mondInfo = new Text("Drücke Taste: M um zurückzukehren\n\n"+
                             "Mittlerer Radius: 1737,5km \n" +
                             "Rotationsperiode: 27,32 Tage \n" +
@@ -286,6 +289,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(mercuryZ - 1350);
                     mercuryGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text mercuryText = new Text("Der Merkur");
+                    //Quelle: "Expedition zu fremden Welten" von R. Jaumann,  U. Köhler, F. Sohl, D. Tirsch, S. Pieth - Springer Verlag, 2018 - S. 32
                     Text mercuryInfo = new Text("Drücke Taste: Y um zurückzukehren\n\n"+
                             "Mittlerer Radius: 2439,7km\n" +
                             "Masse: 0,055 Me\n" +
@@ -322,6 +326,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(venusZ - 2050);
                     venusGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text venusText = new Text("Die Venus");
+                    //Quelle: "Expedition zu fremden Welten" von R. Jaumann,  U. Köhler, F. Sohl, D. Tirsch, S. Pieth - Springer Verlag, 2018 - S. 53
                     Text venusInfo = new Text("Drücke Taste: V um zurückzukehren\n\n"+
                             "Mittlerer Radius: 6051,8km \n" +
                             "Masse: 0,815 Me \n" +
@@ -359,6 +364,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(marsZ - 1050);
                     marsGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text marsText = new Text("Der Mars");
+                    //Quelle: "Expedition zu fremden Welten" von R. Jaumann,  U. Köhler, F. Sohl, D. Tirsch, S. Pieth - Springer Verlag, 2018 - S. 123
                     Text marsInfo = new Text("Drücke Taste: A um zurückzukehren\n\n"+
                             "Masse: 0,107 Erdmasse – erheblich kleiner als Erde / 0,151 Me \n" +
                             "Mittlerer Radius: 3386,2km \n" +
@@ -395,6 +401,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(jupiterZ - 8900);
                     jupiterGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text jupiterText = new Text("Der Jupiter");
+                    //Quelle: "Expedition zu fremden Welten" von R. Jaumann,  U. Köhler, F. Sohl, D. Tirsch, S. Pieth - Springer Verlag, 2018 - S. 184
                     Text jupiterInfo = new Text("Drücke Taste: J um zurückzukehren\n\n"+
                             "Mittlerer Radius: : [äquatorial]: 71,492km  [polar]: 66,854km \n" +
                             "Masse: 2,5 mal die Masse aller Planeten zusammengenommen (entspricht ca. 318 \n" +
@@ -434,6 +441,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(saturnZ - 8900);
                     saturnGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text saturnText = new Text("Der Saturn");
+                    //Quelle: "Expedition zu fremden Welten" von R. Jaumann,  U. Köhler, F. Sohl, D. Tirsch, S. Pieth - Springer Verlag, 2018 - S. 229
                     Text saturnInfo = new Text("Drücke Taste: S um zurückzukehren\n\n"+
                          "Mittlerer Radius: [äquatorial]: 60,268km  [polar]: 54,364km \n" +
                             "Masse: 95,152 Me  \n" +
@@ -468,6 +476,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(uranusZ - 8900);
                     uranusGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text uranusText = new Text("Der Uranus");
+                    //Quelle: "Expedition zu fremden Welten" von R. Jaumann,  U. Köhler, F. Sohl, D. Tirsch, S. Pieth - Springer Verlag, 2018 - S. 277
                     Text uranusInfo = new Text("Drücke Taste: U um zurückzukehren\n\n"+
                             "Mittlerer Radius:[äquatorial]: 25,559km, [polar}: 24,973km \n" +
                             "Masse: 14,536 Me  \n" +
@@ -504,6 +513,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(neptuneZ - 8900);
                     neptuneGroup.getChildren().removeIf(node -> node instanceof Text);
                     Text neptuneText = new Text("Der Neptun");
+                    //Quelle: "Expedition zu fremden Welten" von R. Jaumann,  U. Köhler, F. Sohl, D. Tirsch, S. Pieth - Springer Verlag, 2018 - S. 258
                     Text neptuneInfo = new Text("Drücke Taste: N um zurückzukehren\n\n"+
                             "Mittlerer Radius: [äquatorial]: 25,746km [polar}: 24,341km \n" +
                             "Masse: 17,147 Me \n" +
@@ -532,6 +542,7 @@ public class SolarSystem extends Application {
     }
 
     private ImageView prepareImageView(){
+        //Quelle: https://www.solarsystemscope.com/textures/
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/stars_milky_way.jpg")));
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(200000);
