@@ -204,7 +204,7 @@ public class SolarSystem extends Application {
                 erde.setTranslateX(earthX);
                 erde.setTranslateZ(earthZ);
 
-
+                //OpenAi ChatGPT benutzt um Originalcode zu verbessern https://chatgpt.com/
                 if (isEarthCameraActive) {
                     secondCamera.setTranslateX(earthX);
                     secondCamera.setTranslateY(0);
@@ -242,7 +242,7 @@ public class SolarSystem extends Application {
                 double moonOrbitRadius = 650;
                 double moonX = moonOrbitRadius * Math.cos(moonAngle);  // X-Koordinate des Mondes relativ zur Erde
                 double moonZ = moonOrbitRadius * Math.sin(moonAngle);
-                mond.rotateProperty().set(mond.getRotate() - 0.05/speed);// Z-Koordinate des Mondes relativ zur Erde
+                mond.rotateProperty().set(mond.getRotate() - 0.09/speed);// Z-Koordinate des Mondes relativ zur Erde
                 mond.setTranslateX(earthX + moonX);  // Mond positionieren relativ zur Erde
                 mond.setTranslateZ(earthZ + moonZ);
 
@@ -357,7 +357,7 @@ public class SolarSystem extends Application {
                 double marsZ = marsOrbitRadius * Math.sin(marsAngle);
                 mars.setTranslateX(marsX);
                 mars.setTranslateZ(marsZ);
-                mars.rotateProperty().set(mars.getRotate() - 2.43/speed);
+                mars.rotateProperty().set(mars.getRotate() - 2.53/speed);
                 if (isMarsCameraActive) {
                     secondCamera.setTranslateX(marsX);
                     secondCamera.setTranslateY(0);
@@ -535,24 +535,26 @@ public class SolarSystem extends Application {
                 }
                 // Sonne dreht sich um sich selbst
                 sunRotationAngle -= 0.1/speed; // Geschwindigkeit der Rotation
-                sonne.setRotate(sunRotationAngle); // Rotation auf die Sonne anwenden
+                sonne.setRotate(sunRotationAngle);
             }
         };
         timer.start();
     }
 
     private ImageView prepareImageView(){
-        //Quelle: https://www.solarsystemscope.com/textures/
+        //Quelle: https://www.solarsystemscope.com/textures/[zugegriffen am 4.11.2024]
+        //Quelle:https://www.youtube.com/watch?v=f3ggPt9WN58&list=PLhs1urmduZ295Ryetga7CNOqDymN_rhB_&index=17&ab_channel=GenuineCoder[zugegriffen am 4.11.2024]]
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/stars_milky_way.jpg")));
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(200000);
         imageView.setFitWidth(450000);
 
         imageView.setTranslateX(-imageView.getFitWidth() / 2); // Horizontal zentrieren
-        imageView.setTranslateY(-imageView.getFitHeight() / 2); //// Vertikal zentrieren
+        imageView.setTranslateY(-imageView.getFitHeight() / 2); // Vertikal zentrieren
         imageView.getTransforms().add(new Translate(0,0,70000));
         return imageView;
     }
+    //OpenAi ChatGPT benutzt um Originalcode zu verbessern https://chatgpt.com/
     private KeyCode activeCameraKey = null;
 
     private void handleKeyPress(KeyEvent event) {
@@ -610,6 +612,7 @@ public class SolarSystem extends Application {
                 break;
         }
     }
+
     private void toggleCamera(KeyCode key, Camera targetCamera, boolean isActive, Group group) {
         if (isActive) {
             // Kamera aktivieren
