@@ -70,7 +70,7 @@ public class SolarSystem extends Application {
         width = Screen.getPrimary().getBounds().getWidth();
         height = Screen.getPrimary().getBounds().getHeight();
 
-        // --- 1. Kameras initialisieren ---
+        // Kameras initialisieren
         camera = new PerspectiveCamera(true);
         camera.setNearClip(1);
         camera.setFarClip(200000);
@@ -81,7 +81,7 @@ public class SolarSystem extends Application {
         secondCamera.setNearClip(1);
         secondCamera.setFarClip(200000);
 
-        // --- 2. Planeten erstellen ---
+        // Planeten erstellen
         // Sonne
         Sun sun = new Sun();
         sunGroup = new SmartGroup();
@@ -159,7 +159,7 @@ public class SolarSystem extends Application {
         // aber wir packen sie hier in eine gemeinsame Welt-Gruppe)
         earthGroup.getChildren().add(moonGroup);
 
-        // --- 3. Die 3D-Welt zusammenbauen ---
+        //  3. Die 3D-Welt zusammenbauen
         Group world3DGroup = new Group();
 
         // Hintergrundbild
@@ -169,21 +169,20 @@ public class SolarSystem extends Application {
         world3DGroup.getChildren().addAll(sunGroup, earthGroup, mercuryGroup, venusGroup,
                 saturnGroup, jupiterGroup, marsGroup, uranusGroup, neptuneGroup);
 
-        // --- 4. SubScene erstellen (Isoliert 3D von 2D) ---
-        // Wir nutzen SceneAntialiasing.BALANCED für schönere Kanten
+        //  SubScene erstellen
         subScene = new SubScene(world3DGroup, width, height, true, SceneAntialiasing.BALANCED);
         subScene.setFill(Color.BLACK);
         subScene.setCamera(camera); // Die Kamera gehört zur SubScene!
 
-        // --- 5. Das 2D-Overlay (HUD) erstellen ---
+        // Das 2D-Overlay erstellen
         BorderPane hudPane = createHUD();
 
-        // --- 6. Alles stapeln (StackPane) ---
+        // Alles stapeln (StackPane)
         StackPane mainRoot = new StackPane();
         mainRoot.getChildren().addAll(subScene, hudPane);
         // subScene ist unten (hinten), hudPane liegt oben drauf (vorne)
 
-        // --- 7. Scene und Stage ---
+        // Scene und Stage
         Scene scene = new Scene(mainRoot);
         scene.setFill(Color.BLACK);
 
@@ -211,18 +210,18 @@ public class SolarSystem extends Application {
         // Damit Mausklicks durch das leere Pane auf die 3D Welt gehen
         hudPane.setPickOnBounds(false);
 
-        // 1. Label für den Namen
+        // Label für den Namen
         planetNameLabel = new Label("");
         planetNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
         planetNameLabel.setTextFill(Color.WHITE);
 
-        // 2. Label für die Infos
+        // Label für die Infos
         planetInfoLabel = new Label("");
         planetInfoLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, 18));
         planetInfoLabel.setTextFill(Color.LIGHTGRAY);
         planetInfoLabel.setWrapText(true); // Automatischer Zeilenumbruch
 
-        // 3. Containerbox für die Infos
+        // Containerbox für die Infos
         hudInfoBox = new VBox(15); // 15px Abstand zwischen Titel und Text
         hudInfoBox.getChildren().addAll(planetNameLabel, planetInfoLabel);
 
@@ -275,7 +274,7 @@ public class SolarSystem extends Application {
 
                 double sunRadius = 16350;
 
-                // --- ERDE ---
+                //  ERDE
                 erde.rotateProperty().set(erde.getRotate() - 2.5 / speed);
                 earthAngle += 0.028 / speed;
                 double earthOrbitRadius = 1754 + sunRadius;
@@ -290,7 +289,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(earthZ - 850);
                 }
 
-                // --- MOND ---
+                //  MOND
                 moonAngle += 0.02;
                 double moonOrbitRadius = 650;
                 double moonX = moonOrbitRadius * Math.cos(moonAngle);
@@ -305,7 +304,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(earthZ + moonZ - 350);
                 }
 
-                // --- MERKUR ---
+                // MERKUR
                 mercuryAngle += 0.047 / speed;
                 double mercuryOrbitRadius = 678 + sunRadius;
                 double mercuryX = mercuryOrbitRadius * Math.cos(mercuryAngle);
@@ -320,7 +319,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(mercuryZ - 1350);
                 }
 
-                // --- VENUS ---
+                // VENUS
                 venusAngle += 0.018 / speed;
                 double venusOrbitRadius = 1268 + sunRadius;
                 double venusX = venusOrbitRadius * Math.cos(venusAngle);
@@ -335,7 +334,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(venusZ - 2050);
                 }
 
-                // --- MARS ---
+                // MARS
                 marsAngle += 0.008 / speed;
                 double marsOrbitRadius = 2670 + sunRadius;
                 double marsX = marsOrbitRadius * Math.cos(marsAngle);
@@ -350,7 +349,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(marsZ - 1050);
                 }
 
-                // --- JUPITER ---
+                // JUPITER
                 jupiterAngle += 0.002 / speed;
                 double jupiterOrbitRadius = 9113 + sunRadius;
                 double jupiterX = jupiterOrbitRadius * Math.cos(jupiterAngle);
@@ -365,7 +364,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(jupiterZ - 8900);
                 }
 
-                // --- SATURN ---
+                //  SATURN
                 saturnAngle += 0.0006 / speed;
                 double saturnOrbitRadius = 16721 + sunRadius;
                 saturnX = saturnOrbitRadius * Math.cos(saturnAngle);
@@ -385,7 +384,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(saturnZ - 8900);
                 }
 
-                // --- URANUS ---
+                //  URANUS
                 uranusAngle += 0.0003 / speed;
                 double uranusOrbitRadius = 33549 + sunRadius;
                 double uranusX = uranusOrbitRadius * Math.cos(uranusAngle);
@@ -400,7 +399,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(uranusZ - 8900);
                 }
 
-                // --- NEPTUN ---
+                //  NEPTUN
                 neptuneAngle += 0.0002 / speed;
                 double neptuneOrbitRadius = 52489 + sunRadius;
                 double neptuneX = neptuneOrbitRadius * Math.cos(neptuneAngle);
@@ -415,7 +414,7 @@ public class SolarSystem extends Application {
                     secondCamera.setTranslateZ(neptuneZ - 8900);
                 }
 
-                // --- SONNE ---
+                //  SONNE
                 sunRotationAngle -= 0.1 / speed;
                 sonne.setRotate(sunRotationAngle);
             }
@@ -426,7 +425,7 @@ public class SolarSystem extends Application {
     private ImageView prepareImageView() {
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/stars_milky_way.jpg")));
         ImageView imageView = new ImageView(image);
-        // Hintergrund groß genug machen
+
         imageView.setFitHeight(200000);
         imageView.setFitWidth(450000);
 
@@ -438,7 +437,7 @@ public class SolarSystem extends Application {
 
     private void handleKeyPress(KeyEvent event) {
         if (activeCameraKey != null && !event.getCode().equals(activeCameraKey)) {
-            // Ignoriere andere Tasten, wenn eine Kamera aktiv ist
+
             return;
         }
 
@@ -533,23 +532,23 @@ public class SolarSystem extends Application {
 
     private void toggleCamera(KeyCode key, Camera targetCamera, boolean isActive, String name, String infoText) {
         if (isActive) {
-            // 1. Kamera umschalten (auf die SubScene, nicht die Haupt-Scene)
+
             subScene.setCamera(targetCamera);
             activeCameraKey = key;
             isAllCameraActive = false;
 
-            // 2. HUD aktualisieren und anzeigen
+
             planetNameLabel.setText(name);
             planetInfoLabel.setText(infoText);
             hudInfoBox.setVisible(true);
 
         } else {
-            // 1. Zurück zur Hauptkamera
+
             subScene.setCamera(camera);
             activeCameraKey = null;
             isAllCameraActive = true;
 
-            // 2. HUD ausblenden
+
             hudInfoBox.setVisible(false);
         }
     }
